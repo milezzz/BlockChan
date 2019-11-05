@@ -18,9 +18,9 @@
                             <a><li (click)="viewMain()">Home</li></a>
                             <a><li (click)="viewBoards()">Board List</li></a>
                             <a><li class="secure-highlight" (click)="viewSecure()">Post Anonymously</li></a>
-                        </ul> 
+                        </ul>
                         <br>
-                        <div class="">          
+                        <div class="">
                             <div  class="toggle-container">
                                 <mat-slide-toggle
                                 class=""
@@ -31,8 +31,8 @@
                                 Download Images
                                 </mat-slide-toggle>
                             </div>
-                        </div> 
-                        <div class="">          
+                        </div>
+                        <div class="">
                             <div  class="toggle-container">
                                 <mat-slide-toggle
                                 class=""
@@ -43,12 +43,12 @@
                                 Moderated Mode
                                 </mat-slide-toggle>
                             </div>
-                        </div>   
+                        </div>
                     </div><!--/.nav-collapse -->
                 </div><!--/.container-fluid -->
             </nav>
         </div><!-- end mobile-menu -->
-    
+
         <header class="vertical-header" [hidden]="Hidden">
             <div class="vertical-header-wrapper">
                     <span style="float:right; margin-right:5px; font-size:24px; width:35px; cursor:pointer" (click)="hideMenu()"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
@@ -58,14 +58,14 @@
                     </div><!-- end logo -->
                     <div class="text-center"><span class="beta">BlockChan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
                     <div class="margin-block"></div>
-    
+
                     <ul class="primary-menu">
                         <a><li (click)="viewMain()">Home</li></a>
                         <a><li (click)="viewBoards()">Board List</li></a>
                         <a><li (click)="viewAbout()">About BlockChan</li></a>
-                    </ul>  
+                    </ul>
                     <br>
-                    <div class="">          
+                    <div class="">
                         <div  class="toggle-container">
                             <mat-slide-toggle
                             class=""
@@ -77,8 +77,8 @@
                             </mat-slide-toggle>
                         </div>
                     </div>
-                    <div class="">          
-                        <div  class="toggle-container">
+                    <div class="small text-center">Moderation Mode is Forced. <br/><a href="https://github.com/milezzz/BlockChan" target="_blank">Download the client</a><br/> for No Moderation Mode.
+                        <!--<div  class="toggle-container">
                             <mat-slide-toggle
                             class=""
                             color="green"
@@ -87,8 +87,8 @@
                             >
                             Moderated Mode
                             </mat-slide-toggle>
+                        </div>-->
                         </div>
-                        </div>       
                     <div class="margin-block"></div>
                     <div class="">
                       <ul class="">
@@ -98,7 +98,7 @@
                     </div>
                     <!-- <div class="text-center"><span style="display:inline-block">IndImm Addresses</span></div>-->
                     <div class="margin-block"></div>
- 
+
                   </nav><!-- end nav-menu -->
             </div><!-- end vertical-header-wrapper -->
         </header><!-- end header -->
@@ -106,11 +106,8 @@
 
     <div [class.wrapper]="!Hidden">
         <div id="home" class="video-section js-height-full">
-       
+
             <router-outlet></router-outlet>
-    
+
           </div>
     </div><!-- end wrapper -->
-    
-    
-    
