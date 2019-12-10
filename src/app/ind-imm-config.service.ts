@@ -14,7 +14,7 @@ export class IndImmConfigService {
   public Sort = 'LastReply';
   public LastUpdateTime: Date;
   //GlobalEventService: GlobalEventService;
-  
+
   /*
   constructor(globalEventService: GlobalEventService) {
     this.GlobalEventService = globalEventService;

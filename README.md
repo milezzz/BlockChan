@@ -1,9 +1,9 @@
 
 # BlockChan Live Instances:
 
-	http://blockchan.link | http://blockchan.ca
+	http://blockchan.ca | http://blockchan.link
 	
-  Official Twitter: https://twitter.com/ind_imm
+  Developer's Twitter: https://twitter.com/ind_imm
 
   BlockChan Canada Twitter: https://twitter.com/blockchan_ca
 
@@ -11,7 +11,7 @@
 
     This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.2.
 
-    Clone this repo: https://github.com/ndm-inf/F_Jannies.git
+    Clone this repo: https://github.com/milezzz/BlockChan.git
 
     Install Angular CLI: npm install -g @angular/cli
     
@@ -64,8 +64,8 @@
 
     You should also of course install SSL with a free certificate via https://letsencrypt.org or purchase your own.
 
-## How does IndImm work
-    IndImm Chan works by storing content and references on the Ripple blockchain while storing actual images on IPFS referenced via hash. More detailed explanation and docs coming soon.
+## How does BlockChan work
+    BlockChan works by storing content and references on the Ripple blockchain while storing actual images on IPFS referenced via hash. https://blockchan.ca/about
 
 ## Donate
 
