@@ -239,6 +239,10 @@ export class CatalogComponent implements OnInit {
       this.selfInit('k');
     }
 
+    OpenAnime() {
+      this.selfInit('a');
+    }
+
     OpenLit() {
       this.selfInit('lit');
     }
