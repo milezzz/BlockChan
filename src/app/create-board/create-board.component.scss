@@ -1,0 +1,375 @@
+.progress-container{
+    background-color: rgba(22, 22, 22, 0.75);
+    border-radius: 4px;
+    padding-top:5px;
+    margin-top:5px;
+    padding-bottom:5px;
+    margin-bottom:5px;
+}
+
+.progress-container:hover {
+   background-color: rgba(27, 36, 73, 0.75);
+   border-radius: 4px;
+   padding-top:5px;
+   margin-top:5px;
+   padding-bottom:5px;
+   margin-bottom:5px;
+
+
+   -webkit-box-shadow: -5px 8px 20px -5px rgba(52, 58, 64, 0.6);
+   -moz-box-shadow: -5px 8px 20px -5px rgba(52, 58, 64, 0.6);
+   box-shadow: -5px 8px 20px -5px rgba(52, 58, 64, 0.6);
+   -webkit-transition-duration: 0.3s;
+   -moz-transition-duration: 0.3s;
+   -webkit-transform: translate(1px, -1px);
+   -moz-transform: translate(1px, -1px);
+      
+}
+
+ .upload-container{
+    background-color: rgba(52, 52, 52, 0.55);
+    border-radius: 12px;
+    padding:10px;
+    margin:10px;
+ }
+ 
+ .poster-container{
+    background-color: rgba(52, 52, 52, 0.55);
+    border-radius: 12px;
+    padding:20px;
+    margin:0 auto;
+    
+ }
+ 
+ .board-container{
+   background-color:black;
+   border-radius: 12px;
+   padding:5px;
+   margin:5px;
+   text-align: center;
+   font-size: 20px;
+}
+ .upload-btn-container{
+    border-radius: 12px;
+    padding:10px;
+    margin:10px;
+ }
+  img {
+   max-height: 300px;
+ }
+ .progress-item-container{
+    background-color: rgba(16, 16, 16, 0.85);
+    border-radius: 12px;
+    padding:10px;
+    margin:10px;
+    text-align: center;
+    cursor: pointer;
+    word-wrap: break-word
+ }
+
+ .progress-item-container img {
+   height: 100%;
+   max-width: 100%;
+   display: block;
+   margin: auto;
+   }
+ 
+.webmContainer {
+   background-color: rgba(16, 16, 16, 0.85);
+   border-radius: 12px;
+   padding:10px;
+   margin:10px;
+   text-align: center;
+   cursor: pointer;
+   word-wrap: break-word
+}
+.webmContainer video {
+   height: 100%;
+   max-width: 100%;
+   display: block;
+   margin: auto;
+}
+ .click-show {
+    font-size: 10px;
+ }
+ .toggle-margin{
+    margin:5px;
+ }
+.btn-round{
+    border-radius: 12px;  
+}
+.btn-poster {
+	margin: 12px 0;
+	float: right;
+}
+.msg_length {
+	
+}
+h2{
+   color: white;
+   text-align: center;
+}
+ h4{
+     color:white;
+ }
+ h3{
+    color:white;
+    text-align: center;
+}
+textarea{
+   margin-top: 0px;
+}
+input {
+   margin-bottom: 5px;	
+}
+.estimates{
+   font-size: 12px; top:5px
+}
+.largeIcon{
+   font-size: 80px; top:3px;
+}
+.pointercursor{
+   cursor: pointer;
+}
+
+.uploadWarning{
+      background-color: rgb(163, 163, 7);
+}
+.uploadError{
+      background-color: red;
+}
+a {
+   color:aqua;
+}
+a:visited {
+   color: aqua;
+}
+.green {
+	color: #13d400;
+}
+
+.navgreen {
+	color: #ffffff;
+}
+
+.navgreen:hover {
+	color: #13d400;
+}
+
+.red {
+   color: rgb(189, 3, 3);
+}
+.custom-modalbox {
+   mat-dialog-container {
+    background-color: #000 !important; 
+    border-radius: 12px;  
+
+   }
+ }
+ .progress-item-container-encrypted {
+    background-color:rgb(124, 13, 13);
+    border-radius: 12px;
+    padding:10px;
+    margin:10px;
+    text-align: center;
+    cursor: pointer;
+    font-size:12px;
+    word-wrap: break-word
+ }
+
+ .lockfont{
+    font-size:28px;
+ }
+ .wht{
+    color:white;
+ }
+
+ .blotter-date{
+   width: 50px;
+   text-align: center;
+   font-family: arial,helvetica,sans-serif;
+}
+
+.blotter-content {
+   font-family: arial,helvetica,sans-serif;
+}
+
+.blotter {
+   padding: 0.5em 0 1em 0;
+   font-size:11pt;
+}
+
+.searchfield {
+	font-size:11px;
+	margin-top: 7px; 
+	padding-top: 1px;
+}
+
+tbody {
+   display: table-row-group;
+    vertical-align: text-top;
+    border-color: inherit;
+}
+
+td {
+   margin-left:4px;
+   margin-right:4px;
+   padding-left:4px;
+   padding-right:4px;
+   vertical-align: text-top;
+
+}
+table {
+   border-spacing: 1px;
+   margin-left: auto;
+   margin-right: auto;
+   color: rgb(88, 83, 83);
+   font-family: arial,helvetica,sans-serif;
+   font-size: 10pt;
+   margin-left: 0;
+   margin-right: 0;
+   margin-top: 5px;
+   padding-left: 5px;
+   padding-right: 5px;
+   vertical-align: text-top;
+
+}
+.boardHeader{
+   font-family: Tahoma,sans-serif;
+   font-size: 28px;
+   font-weight: 700;
+   letter-spacing: -2px;
+   margin-top: 0;
+   color: #990000;
+}
+.center-text{
+   text-align: center;
+}
+
+.belowBoard {
+   width:85%;
+   border-color: #333333;
+}
+.belowReply {
+   width: 100%;
+   border-color: #333333;
+}
+.replybracket {
+   color:white;
+}
+.title {
+	color: #b294bb;
+}
+.tiny {
+	font-size: 65% !important;
+}
+.openBoard{
+   cursor: pointer;
+   margin:1px;
+   font-size:12px;
+}
+.post-reply-btn {
+   color:gray;
+   font-size: 22px;
+   font-weight: 700;
+   text-align: center;
+   color: #00ff00;
+}
+.rowspacer2{
+   margin-top:3px;
+   padding-top:3px;
+}
+.util {
+   font-family: arial,helvetica,sans-serif;
+   font-size: 10pt;
+   padding: 0.5em 0;
+}
+
+.smallPadding{
+   margin:  0px;
+   padding: 0px;
+}
+
+.counters{
+   text-align: right;
+   float: right;
+}
+
+/* Drag Drop Files */
+#dropzone {
+  top: 5px;
+  margin-bottom: 5px;
+  padding: 10px 0px;
+}
+
+.selectedCell {
+  margin-top: 10px;
+}
+
+#selectedDiv {
+  text-align: left;
+  padding-bottom: 5px;
+}
+
+#dropzone {
+  background-color: rgba(69, 69, 69, 1);
+}
+
+#dropzone {
+  min-width: 300px;
+  display: block;
+  color: rgba(250, 250, 250, 0.7);
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+  border: 2px dashed rgba(125, 125, 125, 1);
+}
+
+/* Responsive */
+/* 
+  ##Device = Desktops
+  ##Screen = 1281px to higher resolution desktops
+*/
+
+@media (min-width: 1281px) {
+ 	.poster-container{
+		width: 76% !important;	 
+	}
+}
+
+/* 
+  ##Device = Laptops, Desktops
+  ##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+	.poster-container{
+		width: 76% !important;	
+	}
+}
+
+/* 
+  ##Device = Tablets, Ipads (portrait) and Larger
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 1201px) {
+  
+  	.btn-poster{
+	  	width: 110px;
+  	}
+  
+}
+@media (min-width: 468px) {
+  
+  	.btn-poster{
+	  	float: none;
+  	}
+  
+}	
+
+@media (max-width: 1201px) {
+    #hideselect {
+       display: none;
+    }
+}

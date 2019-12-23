@@ -77,4 +77,24 @@ export class BoardsComponent implements OnInit {
     this.Router.navigate(['/catalog/a']);
   }
 
+  OpenLit() {
+    this.Router.navigate(['/catalog/lit']);
+  }
+
+  OpenCon() {
+    this.Router.navigate(['/catalog/con']);
+  }
+
+  OpenV() {
+    this.Router.navigate(['/catalog/v']);
+  }
+
+  OpenMis() {
+    this.Router.navigate(['/catalog/mis']);
+  }
+
+  OpenInt() {
+    this.Router.navigate(['/catalog/int']);
+  }
+
 }

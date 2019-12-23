@@ -13,6 +13,11 @@
         <span title="Meta"class="openBoard navgreen" (click)="OpenMeta()">m</span><span class="grey"> / </span>
         <span title="Technology" class="openBoard navgreen" (click)="OpenTechnology()">g</span><span class="grey"> / </span>
         <span title="Random" class="openBoard navgreen" (click)="OpenRandom()">b</span><span class="grey"> ]</span>
+        <span title="Literature" class="openBoard navgreen" (click)="OpenLit()">lit</span><span class="grey"> / </span>
+        <span title="Conspiracy" class="openBoard navgreen" (click)="OpenCon()">con</span><span class="grey"> / </span>
+        <span title="Video Games" class="openBoard navgreen" (click)="OpenV()">v</span><span class="grey"> / </span>
+        <span title="Mission Planning" class="openBoard navgreen" (click)="OpenMis()">mis</span><span class="grey"> / </span>
+        <span title="International" class="openBoard navgreen" (click)="OpenInt()">int</span><span class="grey"> / </span>
     </div>
     <div class="row uk-text-center text-center">
         <img [src]="HeaderImage">
@@ -60,7 +65,7 @@
                     
                 <div class="row">
 			        <div class="col-lg-7">
-				        <div style="display:none;" id="dragAndDropDiv">
+				        <div id="dragAndDropDiv">
 			            	<div id="dropzone">Drag files to upload / click here to browse <i class="fa fa-upload"></i></div>
 							<div id="selectedDiv"></div>
 			            </div>

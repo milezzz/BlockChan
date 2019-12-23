@@ -29,6 +29,8 @@ import { TipDialogComponent } from './tip-dialog/tip-dialog.component';
 import { ModeratorDialogComponent } from './moderator-dialog/moderator-dialog.component';
 import { ThreadFilterPipe } from './thread-filter.pipe';
 import { EncodeURIPipe } from './encode-uri.pipe';
+import { NgxFileDropModule } from 'ngx-file-drop';
+import { CreateBoardComponent } from './create-board/create-board.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import { EncodeURIPipe } from './encode-uri.pipe';
     TipDialogComponent,
     ModeratorDialogComponent,
     ThreadFilterPipe,
-    EncodeURIPipe
+    EncodeURIPipe,
+    CreateBoardComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +65,8 @@ import { EncodeURIPipe } from './encode-uri.pipe';
     FormsModule,
     ReactiveFormsModule,
     AngularFileViewerModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxFileDropModule
   ],
   entryComponents: [ConfirmDialogComponent, ConfirmEncryptPostComponent, TipDialogComponent, ModeratorDialogComponent],
   providers: [],

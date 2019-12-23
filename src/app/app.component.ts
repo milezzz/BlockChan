@@ -87,6 +87,10 @@ export class AppComponent {
     this.router.navigate(['/fileIndex']);
   }
 
+  public createBoard() {
+    this.router.navigate(['/createBoard']);
+  }
+  
   public popXRP() {
     this.toaster.success('rw2htZCsyJk8yNRYDxjiv9QFiZ2yqCQCPJ', 'XRP Address',
     {

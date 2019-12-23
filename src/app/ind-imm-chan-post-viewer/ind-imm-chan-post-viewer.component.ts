@@ -27,6 +27,7 @@ import { PostModFlag } from '../post-mod-flag';
 import { FlagService } from '../flag.service';
 import { BlockChanHostSettingsService } from '../block-chan-host-settings.service';
 import { LoadingCalculatorService } from '../loading-calculator.service';
+import { AbstractFormGroupDirective } from '@angular/forms';
 
 @Component({
   selector: 'app-ind-imm-chan-post-viewer',
@@ -184,7 +185,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
           const warning: PostModFlag = new PostModFlag();
           warning.Tx = post.Tx;
           warning.Type = result.Type;
-          await this.IndImmChanPostManagerService.IndImmChanPostService.postWarningToRipple(warning, result.Address, result.Key);
+          await this.IndImmChanPostManagerService.IndImmChanPostService.postWarningToRipple(warning, result.Address, result.Key, post.IPFSHash);
           this.ToastrService.success('Post will no longer show in moderated client', 'Post flagged');
         }
       } else {
@@ -213,6 +214,32 @@ export class IndImmChanPostViewerComponent implements OnInit {
     let testEthToSend = 0.00055;
     await this.EthTipService.send(post.ETH, amount);
   }
+
+  
+  OpenLit() {
+    this.Router.navigate(['/catalog/lit']);
+  }
+
+  
+  OpenCon() {
+    this.Router.navigate(['/catalog/con']);
+  }
+
+  
+  OpenV() {
+    this.Router.navigate(['/catalog/v']);
+  }
+
+  
+  OpenMis() {
+    this.Router.navigate(['/catalog/mis']);
+  }
+
+  
+  OpenInt() {
+    this.Router.navigate(['/catalog/int']);
+  }
+
 
   OpenPolitics() {
     this.Router.navigate(['/catalog/pol']);
@@ -397,10 +424,25 @@ export class IndImmChanPostViewerComponent implements OnInit {
     this.Posting = true;
     try {
       this.blockPosting();
-      await this.IndImmChanPostManagerService.post(this.postTitle, this.postMessage, this.posterName, this.fileToUpload,
+      const postResult = await this.IndImmChanPostManagerService.post(this.postTitle, this.postMessage, this.posterName, this.fileToUpload,
         this.postBoard, this.parentTx, this.EncryptedKey, this.EthTipAddress, useTrip, await this.FlagService.GetFlag());
       this.PostingError = false;
-       this.refresh(false);
+
+      var newPost = new IndImmChanPostModel();
+      newPost.IPFSHash = postResult.IPFSHash;
+      newPost.Title = this.postTitle;
+      newPost.Msg = this.postMessage;
+      newPost.MsgSafeHtml = this.postMessage;
+      newPost.Name = this.posterName;
+      newPost.Parent = this.parentTx;
+      newPost.ETH = this.EthTipAddress;
+      newPost.Timestamp = new Date();
+      newPost.Tx = '';
+
+      this.thread.IndImmChanPostModelChildren.push(newPost);
+
+
+       this.refresh(true);
     } catch (error) {
       console.log(error);
       this.PostingError = true;
@@ -486,7 +528,18 @@ export class IndImmChanPostViewerComponent implements OnInit {
       this.postBoardName = 'Weapons';
     } else if (board === 'g') {
       this.postBoardName = 'Technology';
+    }else if (board === 'lit') {
+      this.postBoardName = 'Literature';
+    }  else if (board === 'con') {
+      this.postBoardName = 'Conspiracy';
+    } else if (board === 'v') {
+      this.postBoardName = 'Video Games';
+    } else if (board === 'mis') {
+      this.postBoardName = 'Mission Planning';
+    } else if (board === 'int') {
+      this.postBoardName = 'International';
     }
+    
     this.HeaderImage = 'assets/images/headers/' + this.postBoard + '-1.jpg';
 
     this.parentTx=id;

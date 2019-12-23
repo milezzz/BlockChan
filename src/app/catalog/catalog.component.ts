@@ -23,6 +23,7 @@ import {Title} from '@angular/platform-browser';
 import { FlagService } from '../flag.service';
 import { BlockChanHostSettingsService } from '../block-chan-host-settings.service';
 import { LoadingCalculatorService } from '../loading-calculator.service';
+import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
 
 @Component({
   selector: 'app-catalog',
@@ -110,6 +111,33 @@ export class CatalogComponent implements OnInit {
   
       this.FlagService = flagService;
       const cu: ChunkingUtility = new ChunkingUtility();
+    }
+
+    public dropped(files: NgxFileDropEntry[]) {
+      if(files.length > 1) {
+        this.ToastrService.error('You can only upload one file at a time', 'Upload Error');
+        return;
+      }
+
+      for (const droppedFile of files) {
+        // Is it a file?
+        if (droppedFile.fileEntry.isFile) {
+          const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+          fileEntry.file((file: File) => {
+            this.fileToUpload = file;
+            console.log('Drag and drop file loaded');
+          });
+        }
+      }
+    }
+  
+   
+    public fileOver(event){
+      console.log(event);
+    }
+   
+    public fileLeave(event){
+      console.log(event);
     }
 
     filterCatalog(event) {
@@ -211,10 +239,31 @@ export class CatalogComponent implements OnInit {
       this.selfInit('k');
     }
 
-    OpenAnime() {
-      this.selfInit('a');
+    OpenLit() {
+      this.selfInit('lit');
     }
 
+    
+    OpenCon() {
+      this.selfInit('con');
+    }
+
+    
+    OpenV() {
+      this.selfInit('v');
+    }
+
+    
+    OpenMis() {
+      this.selfInit('mis');
+    }
+
+    
+    OpenInt() {
+      this.selfInit('int');
+    }
+
+    
   async ConfirmEncryption() {
     const dialogRef = this.Dialog.open(ConfirmEncryptPostComponent, {
       width: '650px',
@@ -372,7 +421,7 @@ export class CatalogComponent implements OnInit {
       const tx = await this.IndImmChanPostManagerService.post(this.postTitle, this.postMessage, this.posterName, 
         this.fileToUpload, this.postBoard, this.parentTx, this.EncryptedKey, this.EthTipAddress, useTrip, await this.FlagService.GetFlag());
       this.PostingError = false;
-      this.Router.navigate(['/postViewer/' + this.postBoard + '/' + tx]);
+      this.Router.navigate(['/postViewer/' + this.postBoard + '/' + tx.TX]);
       // this.refresh();
     } catch (error) {
       console.log(error);
@@ -408,10 +457,22 @@ export class CatalogComponent implements OnInit {
       this.postBoardName = 'Weapons';
     } else if (this.postBoard === 'g') {
       this.postBoardName = 'Technology';
+    } else if (this.postBoard === 'lit') {
+      this.postBoardName = 'Literature';
+    }  else if (this.postBoard === 'con') {
+      this.postBoardName = 'Conspiracy';
+    } else if (this.postBoard === 'v') {
+      this.postBoardName = 'Video Games';
+    } else if (this.postBoard === 'mis') {
+      this.postBoardName = 'Mission Planning';
+    } else if (this.postBoard === 'int') {
+      this.postBoardName = 'International';
     }
-    
-    this.HeaderImage = 'assets/images/headers/' + this.postBoard + '-1.jpg';
 
+    
+ 
+    this.HeaderImage = 'assets/images/headers/' + this.postBoard + '-1.jpg';
+   
     const cu: ChunkingUtility = new ChunkingUtility();
 
     const boardString = localStorage.getItem(this.postBoard);
@@ -533,8 +594,21 @@ export class CatalogComponent implements OnInit {
       this.postBoardName = 'Weapons';
     } else if (board === 'g') {
       this.postBoardName = 'Technology';
+    } else if (board === 'lit') {
+      this.postBoardName = 'Literature';
+    }  else if (board === 'con') {
+      this.postBoardName = 'Conspiracy';
+    } else if (board === 'v') {
+      this.postBoardName = 'Video Games';
+    } else if (board === 'mis') {
+      this.postBoardName = 'Mission Planning';
+    } else if (board === 'int') {
+      this.postBoardName = 'International';
     }
+
+ 
     this.HeaderImage = 'assets/images/headers/' + this.postBoard + '-1.jpg';
+
     this.Router.navigate(['/catalog/' + this.postBoard]);
 
     this.setMeta();

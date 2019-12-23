@@ -11,6 +11,7 @@ import { FileIndexComponent } from './file-index/file-index.component';
 import { IndImmChanPostViewerComponent } from './ind-imm-chan-post-viewer/ind-imm-chan-post-viewer.component';
 import { CatalogComponent } from './catalog/catalog.component';
 import { BoardsComponent } from './boards/boards.component';
+import { CreateBoardComponent } from './create-board/create-board.component';
 
 const routes: Routes = [
    {
@@ -61,6 +62,10 @@ const routes: Routes = [
   {
     path: 'boards',
     component: BoardsComponent
+  },
+  {
+    path: 'createBoard',
+    component: CreateBoardComponent
   }
  ];
 

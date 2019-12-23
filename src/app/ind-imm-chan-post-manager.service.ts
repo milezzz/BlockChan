@@ -13,6 +13,7 @@ import { SubPost } from './sub-post';
 import { promise } from 'protractor';
 import { LoadingCalculatorService } from './loading-calculator.service';
 import { GlobalEventService } from './global-event.service';
+import { PostReturnResult } from './post-return-result';
 
 
 @Injectable({
@@ -75,7 +76,8 @@ export class IndImmChanPostManagerService {
   }
 
   public async post(title: string, message: string, name: string, fileToUpload: File, board: string, parent: string, key: PostKey,
-    ethTipAddress: string, useTrip: boolean, flag: string) {
+    ethTipAddress: string, useTrip: boolean, flag: string) : Promise<PostReturnResult> {
+    const result: PostReturnResult = new PostReturnResult();
     const post: IndImmChanPost = new IndImmChanPost();
     post.Name = name;
     post.Title = title.replace(/[^\x00-\x7F]/g, '');;
@@ -103,6 +105,8 @@ export class IndImmChanPostManagerService {
       post.IPFSHash = '';        
     }
 
+    result.IPFSHash = post.IPFSHash;
+
     if(key) {
       const cu: ChunkingUtility = new ChunkingUtility();
       post.Msg = await cu.EncryptMessage(post.Msg, key.Key, key.IVAsUint8);
@@ -115,10 +119,12 @@ export class IndImmChanPostManagerService {
     const minLedger = await this.IndImmChanPostService.rippleService.earliestLedgerVersion;
     if(post.Msg.length <= 420) {
       const txResult  = await this.IndImmChanPostService.postToRipple(post, board, postMemoType);
-      return txResult;
+      result.TX = txResult;
+      return result;
     } else {
       const txResult  = await this.IndImmChanPostService.postToRippleWithSubMessage(post, board, postMemoType);
-      return txResult;
+      result.TX = txResult;
+      return result;
     }
   }
 

@@ -33,7 +33,7 @@ export class IndImmChanPostService {
   }
 
 
-  public async postWarningToRipple(flag: PostModFlag, address: string, key: string) {
+  public async postWarningToRipple(flag: PostModFlag, address: string, key: string, ipfsHash: string) {
     let newTx = '';
 
     while(true) {
@@ -49,6 +49,7 @@ export class IndImmChanPostService {
       const isValidAndConfirmed = await this.rippleService.ValidateTransaction(newTx,
                 await this.rippleService.earliestLedgerVersion);
       if (isValidAndConfirmed.success) {
+        var removeResult = this.removePostFromIPFS(ipfsHash);
         break;
       }
     }
@@ -160,6 +161,28 @@ export class IndImmChanPostService {
     return post;
   }
 
+  public async removePostFromIPFS(ipfsHash: string) {
+    const url = `https://api.pinata.cloud/pinning/removePinFromIPFS`;
+    let headers = new HttpHeaders();
+    const pina = this.chunkingUtility.cd(this.AddressManagerService.pina(), 3);
+    const pins = this.chunkingUtility.cd(this.AddressManagerService.pins(), 3);
+
+    const pinToRemove = {
+      ipfs_pin_hash: ipfsHash
+    };
+
+
+    headers = headers.set('pinata_api_key', pins);
+    headers = headers.set('pinata_secret_api_key', pina);
+    headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+    
+    const result =  await this.httpClient.post<any>(url,
+      pinToRemove, { headers: headers }
+  );
+
+  return result;
+  }
+
   public async postToIPFS(fileToUpload: File ): Promise<IPFSResponse> {
     const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
 
@@ -168,7 +191,7 @@ export class IndImmChanPostService {
 
     let headers = new HttpHeaders();
     const pina = this.chunkingUtility.cd(this.AddressManagerService.pina(), 3);
-    const pins = this.chunkingUtility.cd(this.AddressManagerService.pins(), 3 );
+    const pins = this.chunkingUtility.cd(this.AddressManagerService.pins(), 3);
 
     headers = headers.set('pinata_api_key', pins);
     headers = headers.set('pinata_secret_api_key', pina);

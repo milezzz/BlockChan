@@ -1,0 +1,32 @@
+<div class="container">
+
+    <div class="row">
+        <div class="boardHeader center-text">Create a Board</div>
+    </div>
+
+    <div class="row">
+        <hr>
+    </div>
+    <div class="row poster-container">
+        Board Name: <input id="sub_text" type="text'" [(ngModel)] = "boardName" style="width:100%">
+        <br>
+        Board Address (4 characters max): <input id="sub_text" type="text'" [(ngModel)] = "boardName" style="width:100%">
+        <br>
+        Board Description (80 characters max): <input id="sub_text" type="text'" [(ngModel)] = "boardName" style="width:100%">
+        <br>
+        Boards' XRP Address: <input id="sub_text" type="text'" [(ngModel)] = "boardName" style="width:100%">
+        <br>
+        Boards' XRP Secret: <input id="sub_text" type="text'" [(ngModel)] = "boardName" style="width:100%">
+        <br>
+        <hr>
+        <h2 style="color:red"><b><u>REQUIRED</u></b> if you want to be able to mod the board you create</h2>
+        <h3>If not supplied, you will not be able to mod your board; this can't be undone</h3>
+        Boards' Moderator's XRP Address: <input id="sub_text" type="text'" [(ngModel)] = "boardName" style="width:100%">
+        <br>
+        Boards' Moderator's XRP Secret: <input id="sub_text" type="text'" [(ngModel)] = "boardName" style="width:100%">
+        <br>
+        <div class="center-text">
+        <button type="button" class="btn btn-block btn-success btn-round btn-poster">Create Board</button>
+        </div>    
+    </div>	
+</div>
