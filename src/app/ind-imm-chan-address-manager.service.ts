@@ -36,6 +36,10 @@ export class IndImmChanAddressManagerService {
     }
   }
 
+  public GetBoardCreationAddress() {
+    return 'rBEydHVNZDgjhS8zNAqa5MxHeXwS7ev8dU';
+  }
+
   public GetBoardAddress(board: string) {
     if (board==='pol'){
       if(!this.IndImmConfigService.IsDev) {

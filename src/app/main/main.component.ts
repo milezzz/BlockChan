@@ -46,7 +46,6 @@ export class MainComponent implements OnInit {
     this.removeTagIfExists('twitter:title');
     this.removeTagIfExists('twitter:description');
     this.removeTagIfExists('twitter:image');
-
     this.Meta.addTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.Meta.addTag({ name: 'twitter:site', content: '@ind_imm' });
     this.Meta.addTag({ name: 'twitter:creator', content: '@ind_imm' });
@@ -54,24 +53,6 @@ export class MainComponent implements OnInit {
     this.Meta.addTag({ name: 'twitter:description', content: 'Infinite. Immutable. Indestructible Discussions.'});
     this.Meta.addTag({ name: 'twitter:image', content: 'assets/images/biglogo.png' });
     */
-  }
-
-  public dropped(files: NgxFileDropEntry[]) {
-    if(files.length > 1) {
-      this.ToastrService.error('You can only upload one file at a time', 'Upload Error');
-      return;
-    }
-
-    for (const droppedFile of files) {
-      // Is it a file?
-      if (droppedFile.fileEntry.isFile) {
-        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
-        fileEntry.file((file: File) => {
-          this.fileToUpload = file;
-          console.log('Drag and drop file loaded');
-        });
-      }
-    }
   }
 
   removeTagIfExists(tag) {

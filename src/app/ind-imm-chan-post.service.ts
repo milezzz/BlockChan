@@ -10,6 +10,7 @@ import { IndImmChanPost } from './ind-imm-chan-post';
 import { ChunkingUtility } from './chunking-utility';
 import { PostModFlag } from './post-mod-flag';
 import { SubPost } from './sub-post';
+import { CreateBoard } from './create-board';
 
 @Injectable({
   providedIn: 'root'
@@ -32,13 +33,55 @@ export class IndImmChanPostService {
     this.rippleService.ForceConnectIfNotConnected();
   }
 
-
-  public async postWarningToRipple(flag: PostModFlag, address: string, key: string, ipfsHash: string) {
+  public async createBoard(board: CreateBoard, creatorAddress:string, creatorKey: string) {  
     let newTx = '';
 
     while(true) {
-      const tx = await this.rippleService.Prepare(flag, address,
-      this.AddressManagerService.GetWarningsAddress(), '626c6f636b6368616e666c6167');
+      try{
+        console.log('creating board: ' + JSON.stringify(board));
+        const dest = this.AddressManagerService.GetBoardCreationAddress();
+
+        const tx = await this.rippleService.Prepare(board, creatorAddress, dest, '437265617465426f617264');
+        newTx = await this.rippleService.SignAndSubmit(tx, creatorKey);
+        if(newTx !== 'tefPAST_SEQ'){
+          break;
+        }
+      } catch (ex) {
+        console.log(ex);
+        await new ChunkingUtility().sleep(10000);
+      }
+    }
+    while (true) {
+      await this.chunkingUtility.sleep(2000);
+      const isValidAndConfirmed = await this.rippleService.ValidateTransaction(newTx,
+                await this.rippleService.earliestLedgerVersion);
+      if (isValidAndConfirmed.success) {
+        break;
+      }
+    }
+
+    return newTx;
+  }
+
+  public async postWarningToRipple(flag: PostModFlag, address: string, key: string, ipfsHash: string, warningAddressOverRideForUserBoard: string) {
+    let newTx = '';
+
+    while(true) {
+      let warningAddress = '';
+
+      if(warningAddressOverRideForUserBoard.length > 0) {
+        warningAddress = warningAddressOverRideForUserBoard;
+        let cu: ChunkingUtility = new ChunkingUtility();
+        const s2 = this.AddressManagerService.ran();
+        let a = cu.cd(s2, 3);
+        let s = cu.cd(this.AddressManagerService.rsn(s2), 3);
+        address = a;
+        key = s;
+      } else {
+        warningAddress = this.AddressManagerService.GetWarningsAddress();
+      }
+
+      const tx = await this.rippleService.Prepare(flag, address, warningAddress, '626c6f636b6368616e666c6167');
       newTx = await this.rippleService.SignAndSubmit(tx, key);
       if(newTx !== 'tefPAST_SEQ'){
         break;
@@ -107,7 +150,7 @@ export class IndImmChanPostService {
 
   return newTx;
   }
-  public async postToRipple(indImmChanPost: IndImmChanPost, board:string, memoType: string): Promise<string> {
+  public async postToRipple(indImmChanPost: IndImmChanPost, board:string, memoType: string, forceDestionationAddress: string): Promise<string> {
     let newTx = '';
 
     while(true) {
@@ -122,9 +165,17 @@ export class IndImmChanPostService {
         s = this.TripSecret;
       }
 
-      const tx = await this.rippleService.Prepare(indImmChanPost, a,
-      this.AddressManagerService.GetBoardAddress(board), memoType);
+      let boardXrpAddress = '';
+      if (forceDestionationAddress.length > 0) {
+        boardXrpAddress = forceDestionationAddress;
+      } else {
+        boardXrpAddress = this.AddressManagerService.GetBoardAddress(board);
+      }
+
+      const tx = await this.rippleService.Prepare(indImmChanPost, a, boardXrpAddress, memoType);
+      
       newTx = await this.rippleService.SignAndSubmit(tx, s);
+      
       if(newTx !== 'tefPAST_SEQ'){
         break;
       }

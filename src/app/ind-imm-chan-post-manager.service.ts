@@ -14,6 +14,7 @@ import { promise } from 'protractor';
 import { LoadingCalculatorService } from './loading-calculator.service';
 import { GlobalEventService } from './global-event.service';
 import { PostReturnResult } from './post-return-result';
+import { CreateBoard } from './create-board';
 
 
 @Injectable({
@@ -76,7 +77,7 @@ export class IndImmChanPostManagerService {
   }
 
   public async post(title: string, message: string, name: string, fileToUpload: File, board: string, parent: string, key: PostKey,
-    ethTipAddress: string, useTrip: boolean, flag: string) : Promise<PostReturnResult> {
+    ethTipAddress: string, useTrip: boolean, flag: string, forceXRPDestinationAddress: string) : Promise<PostReturnResult> {
     const result: PostReturnResult = new PostReturnResult();
     const post: IndImmChanPost = new IndImmChanPost();
     post.Name = name;
@@ -118,7 +119,7 @@ export class IndImmChanPostManagerService {
     }
     const minLedger = await this.IndImmChanPostService.rippleService.earliestLedgerVersion;
     if(post.Msg.length <= 420) {
-      const txResult  = await this.IndImmChanPostService.postToRipple(post, board, postMemoType);
+      const txResult  = await this.IndImmChanPostService.postToRipple(post, board, postMemoType, forceXRPDestinationAddress);
       result.TX = txResult;
       return result;
     } else {
@@ -128,22 +129,32 @@ export class IndImmChanPostManagerService {
     }
   }
 
-  public async RemoveFlaggedPost(posts: any[]) {
+  public async RemoveFlaggedPost(posts: any[], userCreatedBoardAddress: string) {
     if (!this.Config.ModerationOn) {
       return posts;
     }
+    
     const minLedger = this.IndImmChanPostService.rippleService.earliestLedgerVersion;
     const max = this.IndImmChanPostService.rippleService.maxLedgerVersion;
-    const moddedPosts: any[] = 
+    const moddedPosts: any[] =
       await this.IndImmChanPostService.rippleService.api.getTransactions(this.IndImmChanPostService.AddressManagerService.GetWarningsAddress(),
       {minLedgerVersion: minLedger, maxLedgerVersion: max});
 
+    if(userCreatedBoardAddress.length > 0){
+      const userModdedPosts: any[] = 
+        await this.IndImmChanPostService.rippleService.api.getTransactions(userCreatedBoardAddress,
+        {minLedgerVersion: minLedger, maxLedgerVersion: max});
+
+        userModdedPosts.forEach(m => {
+          moddedPosts.push(m);
+        });
+    }
 
     const filteredPosts = [];
     for (let i = 0; i < posts.length; i++) {
       let isModded = false;
       for (let j = 0; j < moddedPosts.length; j++) {
-        if ('memos' in moddedPosts[j].specification) {
+        if (moddedPosts[j].specification && 'memos' in moddedPosts[j].specification) {
           let flag: PostModFlag  = null;
 
           try {
@@ -152,7 +163,7 @@ export class IndImmChanPostManagerService {
 
             if (flag.Tx === posts[i].id) {
               const modCheck = this.IndImmChanPostService.AddressManagerService.wa();
-              if(moddedPosts[j].address === modCheck) {
+              if(moddedPosts[j].address === modCheck || moddedPosts[j].specification.destination.address === 'rJEEiMRZ82rxtqMjAafzdPBnbKP3wtv7WH') {
                 isModded = true;
               }
             }
@@ -169,8 +180,40 @@ export class IndImmChanPostManagerService {
     return filteredPosts;
   }
 
-  
-  public async GetPostsForPostViewerOld(boardAddress: string, parent: string): Promise<IndImmChanThread> {
+  public async GetUserCreatedBoardList(): Promise<CreateBoard[]> {
+    //await this.IndImmChanPostService.rippleService.ForceConnectIfNotConnected();
+    while (!this.IndImmChanPostService.rippleService.AllConnected()) {
+      await this.IndImmChanPostService.chunkingUtility.sleep(1000);
+    }
+    const minLedger = 49187118;
+    const max = this.IndImmChanPostService.rippleService.maxLedgerVersion;
+
+    const userCreatedBoards: any[] = 
+        await this.IndImmChanPostService.rippleService.api.getTransactions(this.IndImmChanPostService.AddressManagerService.GetBoardCreationAddress(),
+      {minLedgerVersion: minLedger, maxLedgerVersion: max});
+
+    const boards: CreateBoard[] = [];
+
+    for (let i = 0; i < userCreatedBoards.length; i++) {
+      if ('memos' in userCreatedBoards[i].specification) {
+        try {
+          if(userCreatedBoards[i].specification.memos[0].type === 'CreateBoard') {
+            const boardToParse = userCreatedBoards[i].specification.memos[0].data;
+            let board: CreateBoard = JSON.parse(boardToParse);
+            boards.push(board);
+            continue;
+          }
+        } catch(error) {
+          // console.log(error);
+          continue;
+        }                  
+      }
+    }
+
+    return boards;
+  }
+
+  /* public async GetPostsForPostViewerOld(boardAddress: string, parent: string): Promise<IndImmChanThread> {
     await this.IndImmChanPostService.rippleService.ForceConnectIfNotConnected();
     while (!this.IndImmChanPostService.rippleService.Connected) {
       await this.IndImmChanPostService.chunkingUtility.sleep(1000);
@@ -315,11 +358,11 @@ export class IndImmChanPostManagerService {
       retSet[0].TotalReplies = retSet[0].IndImmChanPostModelChildren.length;
       retSet[0].AllPosts = allPosts;
       return retSet[0];
-  }
+  } */
 
-  public async GetPostsForPostViewerPartial(parent: string, unfilteredResultsUnModded: any[]): Promise<IndImmChanThread> {
-    await this.IndImmChanPostService.rippleService.ForceConnectIfNotConnected();
-    while (!this.IndImmChanPostService.rippleService.Connected) {
+  public async GetPostsForPostViewerPartial(parent: string, unfilteredResultsUnModded: any[], userCreatedBoardAddress: string): Promise<IndImmChanThread> {
+    //await this.IndImmChanPostService.rippleService.ForceConnectIfNotConnected();
+    while (!this.IndImmChanPostService.rippleService.AllConnected()) {
       await this.IndImmChanPostService.chunkingUtility.sleep(1000);
     }
     const minLedger = 49187118;
@@ -329,7 +372,7 @@ export class IndImmChanPostManagerService {
     //const unfilteredResultsUnModded: any[] = await this.IndImmChanPostService.rippleService.api.getTransactions(boardAddress,
     //  {minLedgerVersion: minLedger, maxLedgerVersion: max});
 
-      const unfilteredResults = await this.RemoveFlaggedPost(unfilteredResultsUnModded);
+      const unfilteredResults = await this.RemoveFlaggedPost(unfilteredResultsUnModded, userCreatedBoardAddress);
       const postSet: IndImmChanPostModel[] = [];
       const retSet: IndImmChanThread[] = [];
       const childSet: IndImmChanPostModel[] = [];
@@ -481,7 +524,7 @@ export class IndImmChanPostManagerService {
     });
   }
 
-  public async GetPostsForCatalog(boardAddress: string): Promise<IndImmChanThread[]> {
+  public async GetPostsForCatalog(boardAddress: string, userCreatedBoardAddress: string): Promise<IndImmChanThread[]> {
     const retSet: IndImmChanThread[] = [];
 
     //original ledger for blockchan: const minLedger = 49187118;
@@ -530,7 +573,7 @@ export class IndImmChanPostManagerService {
         retSet.push(item);
       });
     });
-    var finalResult =  await this.GetPostsForCatalogPartial(retSet);
+    var finalResult =  await this.GetPostsForCatalogPartial(retSet, userCreatedBoardAddress);
     const endTimeOfMoldingResults = new Date().toLocaleString();
 
     console.log('startTimOfExecution: ' + startTimOfExecution);
@@ -540,7 +583,7 @@ export class IndImmChanPostManagerService {
     return finalResult;
   }
 
-  public async GetPostsForPostViewer(boardAddress: string, parent: string): Promise<IndImmChanThread> {
+  public async GetPostsForPostViewer(boardAddress: string, parent: string, userCreatedBoardAddress: string): Promise<IndImmChanThread> {
     const retSet: IndImmChanThread[] = [];
 
     //original ledger for blockchan: const minLedger = 49187118;
@@ -589,7 +632,7 @@ export class IndImmChanPostManagerService {
         retSet.push(item);
       });
     });
-    var finalResult =  await this.GetPostsForPostViewerPartial(parent, retSet);
+    var finalResult =  await this.GetPostsForPostViewerPartial(parent, retSet, userCreatedBoardAddress);
     const endTimeOfMoldingResults = new Date().toLocaleString();
 
     console.log('startTimOfExecution: ' + startTimOfExecution);
@@ -600,9 +643,9 @@ export class IndImmChanPostManagerService {
   }
 
 
-  public async GetPostsForCatalogPartial(unfilteredResultsUnModded: any[]): Promise<IndImmChanThread[]> {
-    await this.IndImmChanPostService.rippleService.ForceConnectIfNotConnected();
-    while (!this.IndImmChanPostService.rippleService.Connected) {
+  public async GetPostsForCatalogPartial(unfilteredResultsUnModded: any[], userCreatedBoardAddress: string): Promise<IndImmChanThread[]> {
+    // await this.IndImmChanPostService.rippleService.ForceConnectIfNotConnected();
+    while (!this.IndImmChanPostService.rippleService.AllConnected()) {
       await this.IndImmChanPostService.chunkingUtility.sleep(1000);
     }
     //const minLedger = this.IndImmChanPostService.rippleService.earliestLedgerVersion;
@@ -610,7 +653,7 @@ export class IndImmChanPostManagerService {
     /*const unfilteredResultsUnModded: any[] = await this.IndImmChanPostService.rippleService.api.getTransactions(boardAddress,
       {minLedgerVersion: minLedger, maxLedgerVersion: maxLedger});*/
 
-      const unfilteredResults = await this.RemoveFlaggedPost(unfilteredResultsUnModded);
+      const unfilteredResults = await this.RemoveFlaggedPost(unfilteredResultsUnModded, userCreatedBoardAddress);
 
       const postSet: IndImmChanPostModel[] = [];
       const retSet: IndImmChanThread[] = [];

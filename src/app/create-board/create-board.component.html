@@ -8,25 +8,44 @@
         <hr>
     </div>
     <div class="row poster-container">
-        Board Name: <input id="sub_text" type="text'" [(ngModel)] = "boardName" style="width:100%">
+        Board Name (20 characters max): <input id="sub_text" type="text'" [(ngModel)] = "boardName" style="width:100%">
         <br>
-        Board Address (4 characters max): <input id="sub_text" type="text'" [(ngModel)] = "boardName" style="width:100%">
+        Board Address (5 characters max, e.g, pol): <input id="sub_text" type="text'" [(ngModel)] = "boardAddress" style="width:100%">
         <br>
-        Board Description (80 characters max): <input id="sub_text" type="text'" [(ngModel)] = "boardName" style="width:100%">
+        Board Description (80 characters max): <input id="sub_text" type="text'" [(ngModel)] = "boardDescription" style="width:100%">
         <br>
-        Boards' XRP Address: <input id="sub_text" type="text'" [(ngModel)] = "boardName" style="width:100%">
+        Boards' XRP Address: <input id="sub_text" type="text'" [(ngModel)] = "boardXRPAddress" style="width:100%">
         <br>
-        Boards' XRP Secret: <input id="sub_text" type="text'" [(ngModel)] = "boardName" style="width:100%">
+        Boards' XRP Secret: <input id="sub_text" type="text'" [(ngModel)] = "boardXRPSecret" style="width:100%">
         <br>
         <hr>
         <h2 style="color:red"><b><u>REQUIRED</u></b> if you want to be able to mod the board you create</h2>
-        <h3>If not supplied, you will not be able to mod your board; this can't be undone</h3>
-        Boards' Moderator's XRP Address: <input id="sub_text" type="text'" [(ngModel)] = "boardName" style="width:100%">
+        <h3>If not supplied, you will not be able to mod your board; this can't be undone.</h3> <br>
+        <h4 style="color: red">*Mod address MUST be different than Board's XRP address</h4>
+        Boards' Moderator's XRP Address: <input id="sub_text" type="text'" [(ngModel)] = "boardsModXRPAddress" style="width:100%">
         <br>
-        Boards' Moderator's XRP Secret: <input id="sub_text" type="text'" [(ngModel)] = "boardName" style="width:100%">
+        Boards' Moderator's XRP Secret: <input id="sub_text" type="text'" [(ngModel)] = "boardsModXRPSecret" style="width:100%">
         <br>
         <div class="center-text">
-        <button type="button" class="btn btn-block btn-success btn-round btn-poster">Create Board</button>
+        <button type="button" class="btn btn-block btn-success btn-round btn-poster" (click) = "CreateBoard()">Create Board</button>
         </div>    
+        <br>
+        <div class="text-center" [hidden]="!processingBoardCreation">
+            <h3>Creating Board...</h3>
+    
+            <span style="display:inline-block"><mat-spinner ></mat-spinner></span>
+        </div>
+        <div class="center-text" *ngIf="createBoardError">
+            <hr>
+            <br>
+            <h3 style="color:red">{{ createBoardErrorMessage }} </h3>
+        </div>
+        <div class="center-text" *ngIf="createdBoardSuccess">
+            <hr>
+            <br>
+            <h3 style="color:green">Board succesfully created. It will be available in 3 minutes at : </h3>
+            <br>
+            <h2>http://blockChan.link/catalog/{{ boardAddress }}</h2>
+        </div>
     </div>	
 </div>

@@ -36,6 +36,14 @@ export class RippleService  {
   FileProgressService: FileProgressService;
   LoadingCalculatorService: LoadingCalculatorService;
   
+  public AllConnected(): boolean {
+    if(this.Connected && this.secondaryApiAvailable && this.thirdApiAvailable) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   constructor(cfg: IndImmConfigService, tstr: ToastrService, filePrgSvc: FileProgressService, loadingCalculatorService: LoadingCalculatorService) {
     this.toaster = tstr;
     this.Config = cfg;
@@ -87,7 +95,7 @@ export class RippleService  {
    }
 
    public async ForceConnectIfNotConnected() {
-     if (!this.Connected) {
+     if (!this.Connected || !this.secondaryApiAvailable || !this.thirdApiAvailable) {
        await this.ConnectAPI();
      }
    }
@@ -186,9 +194,16 @@ export class RippleService  {
     //this.fourthApi = new ripple.RippleAPI({ server: this.Config.GetRippleServer() });
     //this.fifthApi = new ripple.RippleAPI({ server: this.Config.GetRippleServer() });
 
-    this.ConnectAPIInstance(this.api, 1);
-    this.ConnectAPIInstance(this.secondaryApi, 2);
-    this.ConnectAPIInstance(this.thirdApi, 3);
+    if(!this.Connected) {
+      await this.ConnectAPIInstance(this.api, 1);
+    }
+    if(!this.secondaryApiAvailable) {
+      await this.ConnectAPIInstance(this.secondaryApi, 2);
+    }
+    if(!this.thirdApiAvailable) {
+      await this.ConnectAPIInstance(this.thirdApi, 3);
+    }
+    
    
     //this.ConnectAPIInstance(this.fourthApi, 4);
 

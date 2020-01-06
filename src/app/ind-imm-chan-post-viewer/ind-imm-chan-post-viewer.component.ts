@@ -29,6 +29,7 @@ import { BlockChanHostSettingsService } from '../block-chan-host-settings.servic
 import { LoadingCalculatorService } from '../loading-calculator.service';
 import { AbstractFormGroupDirective } from '@angular/forms';
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
+import { CreateBoard } from '../create-board';
 
 @Component({
   selector: 'app-ind-imm-chan-post-viewer',
@@ -47,6 +48,10 @@ export class IndImmChanPostViewerComponent implements OnInit {
   Meta: Meta;
   Title: Title;
   Elem: ElementRef;
+
+
+  IsUserCreatedBoard = false;
+  UserCreatedBoardReference: CreateBoard;
 
   postTitle = '';
   postMessage = '';
@@ -115,7 +120,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
         });
       }
 
-      const ivAsUint8 = cu.Base64ToUint8(this.IV);
+      const ivAsUint8 = cu.Base64ToUint8(this.IV);      
       this.EncryptedKey = new PostKey()
       this.EncryptedKey.Key = this.Key
       this.EncryptedKey.IVAsUint8 = ivAsUint8;
@@ -140,7 +145,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
         post = await this.IndImmChanPostManagerService.ManualOverRideShowImage(post);
       }
 
-      return post;
+      return post; 
     } catch (error) {
       if(isParent){
         this.ToastrService.error('Error Decrypting Post, plese try again.', 'Decrypt Error');
@@ -152,14 +157,14 @@ export class IndImmChanPostViewerComponent implements OnInit {
 
   async highlightposts(postClass: string) {
     let eles = this.Elem.nativeElement.querySelectorAll('.h' + postClass);
-    for (let i = 0; i < eles.length; i++) {
+    for (let i = 0; i < eles.length; i++) {    
       if(eles[i].style.background === '') {
         eles[i].style.background = '#8C3726';
         const newHeight = eles[i].parentNode.parentNode.clientHeight;
-
+        
         eles[i].style.minHeight = newHeight + 'px';
         eles[i].style.height = newHeight+ 'px';
-
+        
         //eles[i].style.minHeight = '500px';
         // eles[i].style.height = '500px';
       } else {
@@ -178,6 +183,12 @@ export class IndImmChanPostViewerComponent implements OnInit {
       if (<PostModFlagModel>result) {
         result.Tx = post.Tx;
 
+        let warningAddress = '';
+
+        if (this.IsUserCreatedBoard) {
+          warningAddress = this.UserCreatedBoardReference.BoardsModXRPAddress;
+        } 
+
         const modValid = await this.IndImmChanPostManagerService.IndImmChanPostService.rippleService.IsSenderSecretValid(result.Address, result.Key);
 
         if(!modValid){
@@ -186,11 +197,11 @@ export class IndImmChanPostViewerComponent implements OnInit {
           const warning: PostModFlag = new PostModFlag();
           warning.Tx = post.Tx;
           warning.Type = result.Type;
-          await this.IndImmChanPostManagerService.IndImmChanPostService.postWarningToRipple(warning, result.Address, result.Key, post.IPFSHash);
+          await this.IndImmChanPostManagerService.IndImmChanPostService.postWarningToRipple(warning, result.Address, result.Key, post.IPFSHash, warningAddress);
           this.ToastrService.success('Post will no longer show in moderated client', 'Post flagged');
         }
       } else {
-
+        
       }
     });
   }
@@ -206,7 +217,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
         console.log('sending eth');
         this.SendEth(post, result)
       } else {
-
+        
       }
     });
   }
@@ -216,27 +227,27 @@ export class IndImmChanPostViewerComponent implements OnInit {
     await this.EthTipService.send(post.ETH, amount);
   }
 
-
+  
   OpenLit() {
     this.Router.navigate(['/catalog/lit']);
   }
 
-
+  
   OpenCon() {
     this.Router.navigate(['/catalog/con']);
   }
 
-
+  
   OpenV() {
     this.Router.navigate(['/catalog/v']);
   }
 
-
+  
   OpenMis() {
     this.Router.navigate(['/catalog/mis']);
   }
 
-
+  
   OpenInt() {
     this.Router.navigate(['/catalog/int']);
   }
@@ -283,7 +294,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
     this.ToastrService = toastrSrvice;
     this.Sanitizer = sanitizer;
     this.PostingEnabled = true;
-    this.Config = config;
+    this.Config = config; 
     this.GlobalEventService = globalEventService;
     this.EthTipService = ethTipService;
     this.Meta = meta;
@@ -297,7 +308,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
     });
 
     this.GlobalEventService.ShowImagesToggled.subscribe(state=>{
-
+    
       const cu: ChunkingUtility = new ChunkingUtility();
       if(state) {
         this.showImagesFromToggle()
@@ -305,7 +316,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
         this.hideImagesFromToggle();
       }
     });
-
+    this.setBoardNameWrapper();
   }
 
   async reloadImages() {
@@ -313,7 +324,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
       if(this.PostDecrypted || !this.thread.IndImmChanPostModelParent.Enc){
         if(!this.thread.IndImmChanPostModelParent.Base64Image) {
           this.thread.IndImmChanPostModelParent.ImageLoading = true;
-          this.IndImmChanPostManagerService.ManualOverRideShowImageFromRefresh(this.thread.IndImmChanPostModelParent).then(result=>{
+          this.IndImmChanPostManagerService.ManualOverRideShowImageFromRefresh(this.thread.IndImmChanPostModelParent).then(result=>{          
             this.thread.IndImmChanPostModelParent = result;
             this.thread.IndImmChanPostModelParent.ImageLoading = false;
           });
@@ -336,7 +347,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
   }
 
   async showImagesFromToggle() {
-
+    
     if(this.PostDecrypted || !this.thread.IndImmChanPostModelParent.Enc){
       this.IndImmChanPostManagerService.ManualOverRideShowImage(this.thread.IndImmChanPostModelParent).then(result=>{
         this.thread.IndImmChanPostModelParent = result;
@@ -417,16 +428,24 @@ export class IndImmChanPostViewerComponent implements OnInit {
       this.IndImmChanPostManagerService.IndImmChanPostService.TripSecret = '';
       this.IndImmChanPostManagerService.IndImmChanPostService.TripValid = false;
     }
-
+    
     if(!this.ShowTripEntry) {
       this.posterName = 'Anonymous';
     }
 
     this.Posting = true;
+
+    let boardAddress = '';
+
     try {
+      let forceXRPDestinationAddress = '';
+      if (this.IsUserCreatedBoard) {
+        forceXRPDestinationAddress = this.UserCreatedBoardReference.BoardXRPAddress;
+      }
+
       this.blockPosting();
       const postResult = await this.IndImmChanPostManagerService.post(this.postTitle, this.postMessage, this.posterName, this.fileToUpload,
-        this.postBoard, this.parentTx, this.EncryptedKey, this.EthTipAddress, useTrip, await this.FlagService.GetFlag());
+        this.postBoard, this.parentTx, this.EncryptedKey, this.EthTipAddress, useTrip, await this.FlagService.GetFlag(), forceXRPDestinationAddress);
       this.PostingError = false;
 
       var newPost = new IndImmChanPostModel();
@@ -448,31 +467,42 @@ export class IndImmChanPostViewerComponent implements OnInit {
       console.log(error);
       this.PostingError = true;
       this.PostingEnabled = true;
-    }
+    }  
     this.Posting = false;
   }
 
   async refresh(silent: boolean) {
+    await this.setBoardNameWrapper();
 
     if(!silent) {
       this.PostLoading = true;
     }
-    while (!this.IndImmChanPostManagerService.IndImmChanPostService.rippleService.Connected) {
+    while (!this.IndImmChanPostManagerService.IndImmChanPostService.rippleService.AllConnected()) {
       await this.IndImmChanPostManagerService.IndImmChanPostService.chunkingUtility.sleep(1000);
     }
     await this.IndImmChanPostManagerService.IndImmChanPostService.chunkingUtility.sleep(100);
 
     window.scrollTo(0,document.body.scrollHeight);
 
-    const threadResult = await this.IndImmChanPostManagerService.GetPostsForPostViewer(this.AddressManagerService.GetBoardAddress(this.postBoard),
-      this.parentTx);
+    let boardAddress = '';
+    let modAddress = '';
+
+    if(this.IsUserCreatedBoard) {
+      boardAddress = this.UserCreatedBoardReference.BoardXRPAddress;
+      modAddress = this.UserCreatedBoardReference.BoardsModXRPAddress;
+    } else {
+      boardAddress = this.AddressManagerService.GetBoardAddress(this.postBoard);
+    }
+
+    const threadResult = await this.IndImmChanPostManagerService.GetPostsForPostViewer(boardAddress, 
+      this.parentTx, modAddress);
     threadResult.Board = this.postBoard;
     threadResult.Prep(this.BlockChanHostSettingsService.BaseUrl);
     this.thread = threadResult;
     this.PostLoading = false;
 
     if (this.PostDecrypted) {
-      this.decrypt();
+      this.decrypt(); 
     }
     try {
           localStorage.setItem('thread-' + this.thread.IndImmChanPostModelParent.Tx, JSON.stringify(this.thread));
@@ -487,7 +517,16 @@ export class IndImmChanPostViewerComponent implements OnInit {
   }
 
   async loadCatalogAsync() {
-    const boardCatalog = await this.IndImmChanPostManagerService.GetPostsForCatalog(this.AddressManagerService.GetBoardAddress(this.postBoard));
+    let boardAddress = '';
+    let modAddress = '';
+    if(this.IsUserCreatedBoard) {
+      boardAddress = this.UserCreatedBoardReference.BoardXRPAddress;
+      modAddress = this.UserCreatedBoardReference.BoardsModXRPAddress;
+    } else {
+      boardAddress = this.AddressManagerService.GetBoardAddress(this.postBoard);
+    }
+
+    const boardCatalog = await this.IndImmChanPostManagerService.GetPostsForCatalog(boardAddress, modAddress);
     boardCatalog.sort(this.threadCompare)
     try {
       localStorage.setItem(this.postBoard, JSON.stringify(boardCatalog));
@@ -508,14 +547,15 @@ export class IndImmChanPostViewerComponent implements OnInit {
 
   ngOnInit() {
 
-
+  
     const board = this.Route.snapshot.params['board'];
     const id = this.Route.snapshot.params['id'];
 
-
+  
     console.log('board: ' + board);
     this.postBoard=board;
-    if (board === 'pol') {
+    this.setBoardNameWrapper();
+    /*if (board === 'pol') {
       this.postBoardName = 'Politically Incorrect';
     } else if (board === 'biz') {
       this.postBoardName = 'Business';
@@ -539,10 +579,8 @@ export class IndImmChanPostViewerComponent implements OnInit {
       this.postBoardName = 'Mission Planning';
     } else if (board === 'int') {
       this.postBoardName = 'International';
-    }
-
-    this.HeaderImage = 'assets/images/headers/' + this.postBoard + '-1.jpg';
-
+    } */
+    
     this.parentTx=id;
 
     const threadString = localStorage.getItem('thread-' + id);
@@ -585,7 +623,6 @@ export class IndImmChanPostViewerComponent implements OnInit {
     this.removeTagIfExists('twitter:title');
     this.removeTagIfExists('twitter:description');
     this.removeTagIfExists('twitter:image');
-
     this.Meta.addTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.Meta.addTag({ name: 'twitter:site', content: '@ind_imm' });
     this.Meta.addTag({ name: 'twitter:creator', content: '@ind_imm' });
@@ -596,21 +633,84 @@ export class IndImmChanPostViewerComponent implements OnInit {
       */
   }
 
-  public dropped(files: NgxFileDropEntry[]) {
-    if(files.length > 1) {
-      this.ToastrService.error('You can only upload one file at a time', 'Upload Error');
-      return;
+public dropped(files: NgxFileDropEntry[]) {
+      if(files.length > 1) {
+        this.ToastrService.error('You can only upload one file at a time', 'Upload Error');
+        return;
+      }
+
+      for (const droppedFile of files) {
+        // Is it a file?
+        if (droppedFile.fileEntry.isFile) {
+          const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+          fileEntry.file((file: File) => {
+            this.fileToUpload = file;
+            console.log('Drag and drop file loaded');
+          });
+        }
+      }
     }
 
-    for (const droppedFile of files) {
-      // Is it a file?
-      if (droppedFile.fileEntry.isFile) {
-        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
-        fileEntry.file((file: File) => {
-          this.fileToUpload = file;
-          console.log('Drag and drop file loaded');
-        });
-      }
+  async loadHeaderImage(boardName: string) {
+      if (this.IsUserCreatedBoard) {
+        this.HeaderImage = 'assets/images/headers/' + 'pol' + '-1.jpg';
+      } else {
+        this.HeaderImage = 'assets/images/headers/' + boardName+ '-1.jpg';
+      }        
+  }
+
+  async setBoardNameWrapper() {
+    await this.setBoardName();
+    await this.loadHeaderImage(this.postBoard);
+    return; 
+  }
+
+  async setBoardName() {
+    if (this.postBoard === 'pol') {
+      this.postBoardName = 'Politically Incorrect';
+      this.IsUserCreatedBoard = false;
+    } else if (this.postBoard === 'biz') {
+      this.postBoardName = 'Business';
+      this.IsUserCreatedBoard = false;
+    } else if (this.postBoard === 'b') {
+      this.postBoardName = 'Random';
+      this.IsUserCreatedBoard = false;
+    } else if (this.postBoard === 'm') {
+      this.postBoardName = 'Meta';
+      this.IsUserCreatedBoard = false;
+    } else if (this.postBoard === 'a') {
+      this.postBoardName = 'Anime';
+      this.IsUserCreatedBoard = false;
+    } else if (this.postBoard === 'k') {
+      this.postBoardName = 'Weapons';
+      this.IsUserCreatedBoard = false;
+    } else if (this.postBoard === 'g') {
+      this.postBoardName = 'Technology';
+      this.IsUserCreatedBoard = false;
+    } else if (this.postBoard === 'lit') {
+      this.postBoardName = 'Literature';
+      this.IsUserCreatedBoard = false;
+    }  else if (this.postBoard === 'con') {
+      this.postBoardName = 'Conspiracy';
+      this.IsUserCreatedBoard = false;
+    } else if (this.postBoard === 'v') {
+      this.postBoardName = 'Video Games';
+      this.IsUserCreatedBoard = false;
+    } else if (this.postBoard === 'mis') {
+      this.postBoardName = 'Mission Planning';
+      this.IsUserCreatedBoard = false;
+    } else if (this.postBoard === 'int') {
+      this.postBoardName = 'International';
+      this.IsUserCreatedBoard = false;
+    } else {
+      const userCreatedBoards = await this.IndImmChanPostManagerService.GetUserCreatedBoardList();
+      userCreatedBoards.forEach(b=> {
+        if(this.postBoard == b.BoardAddress) {
+          this.UserCreatedBoardReference = b;
+          this.postBoardName = b.BoardName;
+          this.IsUserCreatedBoard = true;
+        }
+      })
     }
   }
 

@@ -2,38 +2,37 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import { Meta } from '@angular/platform-browser';
 import {Title} from '@angular/platform-browser';
+import { IndImmChanPostManagerService } from '../ind-imm-chan-post-manager.service';
+import { CreateBoard } from '../create-board';
 
 @Component({
   selector: 'app-boards',
   templateUrl: './boards.component.html',
   styleUrls: ['./boards.component.scss']
 })
+
 export class BoardsComponent implements OnInit {
   Router: Router;
   Meta: Meta;
   Title: Title;
+  IndImmChanPostManagerService: IndImmChanPostManagerService;
+  UserCreatedBoareds: CreateBoard[];
+  UserBoardsLoading = false;
 
-  constructor(router:Router, meta: Meta, title: Title) {
+  constructor(router:Router, meta: Meta, title: Title, postManagerService: IndImmChanPostManagerService) {
+    this.IndImmChanPostManagerService = postManagerService;
     this.Router = router;
     this.Meta = meta;
     this.Title = title;
     this.Title.setTitle("BlockChan Boards");
-    /*
-    this.removeTagIfExists('twitter:card');
-    this.removeTagIfExists('twitter:site');
-    this.removeTagIfExists('twitter:creator');
-    this.removeTagIfExists('twitter:title');
-    this.removeTagIfExists('twitter:description');
-    this.removeTagIfExists('twitter:image');
+    this.loadUserBoards();
+  }
 
-
-    this.Meta.addTag({ name: 'twitter:card', content: 'summary_large_image' });
-    this.Meta.addTag({ name: 'twitter:site', content: '@ind_imm' });
-    this.Meta.addTag({ name: 'twitter:creator', content: '@ind_imm' });
-    this.Meta.addTag({ name: 'twitter:title', content: 'BlockChan Boards'});
-    this.Meta.addTag({ name: 'twitter:description', content: 'Boards available on BlockChan'});
-    this.Meta.addTag({ name: 'twitter:image', content: 'assets/images/biglogo.png' });
-    */
+  async loadUserBoards() {
+    this.UserBoardsLoading = true;
+    const userCreatedBoards = await this.IndImmChanPostManagerService.GetUserCreatedBoardList();
+    this.UserCreatedBoareds = userCreatedBoards;
+    this.UserBoardsLoading = false;
   }
 
   removeTagIfExists(tag) {
@@ -46,6 +45,10 @@ export class BoardsComponent implements OnInit {
   ngOnInit() {
 
 
+  }
+
+  OpenUserCreatedBoard(board: CreateBoard) {
+    this.Router.navigate(['/catalog/' + board.BoardAddress]);
   }
 
   OpenPolitics() {
