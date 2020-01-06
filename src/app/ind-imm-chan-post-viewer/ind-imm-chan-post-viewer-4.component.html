@@ -3,7 +3,7 @@
         &nbsp;&nbsp;&nbsp;&nbsp;<a [attr.href]="BlockChanHostSettingsService.HomeLink" title="Home"><i class="fa fa-home navgreen"></i></a>
         <span class="grey"> | </span>
     <a [attr.href]="BlockChanHostSettingsService.BoardsLink" title="Boards"><i class="fa fa-th-list navgreen"></i></a>
-        <span class="grey"> | </span>     
+        <span class="grey"> | </span>
     <a [attr.href]="BlockChanHostSettingsService.AboutLink" title="About"><i class="fa fa-question-circle navgreen" aria-hidden="true"></i></a>
 	         &nbsp;&nbsp;<span class="grey">[ </span>
         <span title="Politically Incorrect" class="openBoard navgreen" (click)="OpenPolitics()">pol</span><span class="grey"> / </span>
@@ -12,41 +12,41 @@
         <span title="Weapons" class="openBoard navgreen" (click)="OpenWeapons()">k</span><span class="grey"> / </span>
         <span title="Meta"class="openBoard navgreen" (click)="OpenMeta()">m</span><span class="grey"> / </span>
         <span title="Technology" class="openBoard navgreen" (click)="OpenTechnology()">g</span><span class="grey"> / </span>
-        <span title="Random" class="openBoard navgreen" (click)="OpenRandom()">b</span><span class="grey"> ]</span>
         <span title="Literature" class="openBoard navgreen" (click)="OpenLit()">lit</span><span class="grey"> / </span>
         <span title="Conspiracy" class="openBoard navgreen" (click)="OpenCon()">con</span><span class="grey"> / </span>
         <span title="Video Games" class="openBoard navgreen" (click)="OpenV()">v</span><span class="grey"> / </span>
         <span title="Mission Planning" class="openBoard navgreen" (click)="OpenMis()">mis</span><span class="grey"> / </span>
         <span title="International" class="openBoard navgreen" (click)="OpenInt()">int</span><span class="grey"> / </span>
+        <span title="Random" class="openBoard navgreen" (click)="OpenRandom()">b</span><span class="grey"> ]</span>
     </div>
     <div class="row uk-text-center text-center">
         <img [src]="HeaderImage">
     </div>
-    
+
     <div class="row">
         <div class="boardHeader center-text">/{{ postBoard }}/ - {{ postBoardName }}</div>
-    </div>    
+    </div>
     <div class="row">
         <hr class="belowBoard">
     </div>
     <div class="row" *ngIf="thread && thread.IndImmChanPostModelParent.Enc && !PostDecrypted">
         <div class="col-lg-1"></div>
-            <div class="col-lg-10">                
+            <div class="col-lg-10">
             <div class="row">
                 <span style="font-size: 16px; color:darkred">Post must be decrypted to view or post, enter key and IV below.
                 </span>
                 <div>
-                    Key: <input type="text" [(ngModel)]="Key" style="width:100%"> 
+                    Key: <input type="text" [(ngModel)]="Key" style="width:100%">
                 </div>
                 <div>
-                    IV: <input type="text" [(ngModel)]="IV" style="width:100%"> 
+                    IV: <input type="text" [(ngModel)]="IV" style="width:100%">
                 </div>
                 <div (click)="decrypt()" class="btn btn-wrapper btn-primary btn-round" style="width:100%">Decrypt</div>
             </div>
         </div>
         <div class="col-lg-1"></div>
-    </div> 
-    
+    </div>
+
     <div class="row" [hidden]="ShowPostingForm ||
     (thread && thread.IndImmChanPostModelParent.Enc && !PostDecrypted)">
         <div class="center-text">
@@ -57,31 +57,47 @@
             </span>
         </div>
     </div>
-    
+
     <div class="row poster-container" [hidden]="!ShowPostingForm">
                     Your Reply:<br>
                         <textarea name="com" id="msg_text" cols="48" rows="4" wrap="soft" tabindex="4" [(ngModel)] = "postMessage" style="width:100%"></textarea>
                         <div><span id="msg_length" class="msg_length">{{ postMessage | encodeURI}} / 1320 (urlencoded characters take up to 3)</span></div>
-                    
-                <div class="row">
-			        <div class="col-lg-7">
-				        <div id="dragAndDropDiv">
-			            	<div id="dropzone">Drag files to upload / click here to browse <i class="fa fa-upload"></i></div>
-							<div id="selectedDiv"></div>
-			            </div>
-				        <input type="file" id="file" (change)="handleFileInput($event.target.files)"> <br>
-				        <span class="small">&bull; Max file size: 4MB</span><br>
-				        <span class="small">&bull; Posts are permanent so follow <a href="/about">the rules</a></span>
+
+                        <div class="row">
+                  	        <div class="col-lg-7">
+                  				<div class="center">
+                  					<ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+                  					(onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+                  						<ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                  						  Drag and Drop File. &nbsp;&nbsp;
+                  						  <button type="button" (click)="openFileSelector()" class="btn btn-block btn-secondary btn-round btn-upload">Choose File <i class="fa fa-upload"></i>&nbsp;</button>
+                  						</ng-template>
+                  					</ngx-file-drop>
+                  					<div class="upload-table">
+                  						<table class="table">
+                  							<thead>
+                  								<tr>
+                  									<th>Name</th>
+                  								</tr>
+                  							</thead>
+                  							<tbody class="upload-name-style" *ngIf="fileToUpload">
+                  								<td><strong>{{ fileToUpload.name }}</strong></td>
+                  							</tbody>
+                  						</table>
+                  					</div>
+                  				</div>
+				                <span class="small">&bull; Max file size: 4MB</span><br>
+				                <span class="small">&bull; Posts are permanent so follow <a href="/about">the rules</a></span>
 			        </div>
 			        <div class="col-md-6 col-lg-2">
 				        <div [hidden]="!PostingEnabled">
 			                <button (click)="AddTrip()" class="btn btn-block btn-primary btn-round btn-poster">Trip Code <i class="fa fa-hashtag"></i></button>
-			            </div>	        
+			            </div>
 			        </div>
 			        <div class="col-md-6 col-lg-3">
 				    	<div [hidden]="!PostingEnabled">
 					        <button (click)="post()" class="btn btn-block btn-success btn-round btn-poster">Reply! <i class="fa fa-share"></i></button>
-					    </div> 
+					    </div>
 					    <div [hidden]="!PostingEnabled">
 					        <button (click)="togglePostingForm()" class="btn btn-block btn-danger btn-round btn-poster">Close <i class="fa fa-times-circle"></i></button>
 					    </div>
@@ -97,12 +113,12 @@
 	                    <br><br>
 		                XRP Address: <input type="text" [(ngModel)] = "TripAddress" rows="4" style="width:100%">
 		                XRP Secret: <input type="text" [(ngModel)] = "TripSecret" rows="4" style="width:100%">
-		                Posters Name: <input type="text" [(ngModel)] = "posterName" rows="4" style="width:100%">	
+		                Posters Name: <input type="text" [(ngModel)] = "posterName" rows="4" style="width:100%">
 		            <div [hidden]="!ShowTripEntry">
 			        	<div class="btn btn-block btn-danger btn-round btn-poster hidden">No Trip <i class="fa fa-times-circle"></i></div>
-			    	</div>   
+			    	</div>
 	            </div>
-	            	<div style="margin-top:7px; padding-top: 7px; margin-bottom:7px; padding-bottom: 7px;">    
+	            	<div style="margin-top:7px; padding-top: 7px; margin-bottom:7px; padding-bottom: 7px;">
 		            	<br>
 		            	Tip Address (ETH): <input type="text" [(ngModel)] = "EthTipAddress" rows="4" style="width:100%">
 	            	</div>
@@ -119,30 +135,30 @@
 				Connecting...({{LoadingCalculatorService.NumberOfClientsConnected}}/{{LoadingCalculatorService.NumberOfClientConnectionsRequired}})
 			</span></b>
 		</div>
-		<div class="col-lg-4"></div> 
+		<div class="col-lg-4"></div>
 	</div>
     <div class="text-center" [hidden]="!Posting">
         <h3>Posting...</h3>
         <span style="display:inline-block"><mat-spinner ></mat-spinner></span>
     </div>
-    
+
     <div class="row">
         <div class="col-lg-3"></div>
-        <div class="col-lg-6">        
+        <div class="col-lg-6">
             <hr class="belowReply">
             <div class="blotter">
-                <span class="small">&bull; Aggressive caching is active - make liberal use of the <span style="cursor: pointer;" class="navgreen" (click)="refresh(false)">[ Update <i class="fas fa-sync"></i> ]</span> button</span><br>
+                <span class="small">&bull; User created boards? Give us your <a href="https://blockchan.ca/postViewer/m/D7B93460BF5FCF906B711E6DDDC3E18F74DC88C69A6CBF59F2F744C989E830DA">feedback</a></span><br>
                 <span class="small">&bull; BlockChan is evolving. Keep suggestions, bug reports, etc. in <a href="/catalog/m">/meta</a></span><br>
                 <!--<span class="small">&bull; We run on cigarettes + beer. Send <i class="fa fa-btc"> </i>itcoin asap bros: xxxxxxxxxxxxxxxxx</span>-->
             </div>
         </div>
         <div class="col-lg-3"></div>
     </div>
-    
-    <div class="row rowspacer2">     
-        <hr class="smallPadding"> 
+
+    <div class="row rowspacer2">
+        <hr class="smallPadding">
     </div>
-    
+
     <div class="row" *ngIf="thread !== null">
         <div class="col-lg-4">
             <div class="util">
@@ -154,13 +170,13 @@
             <div class="util counters">
                 <span class="ts-replies">{{ thread.IndImmChanPostModelChildren.length }}</span> / <span class="ts-images">{{ thread.ImageReplies - 1 }}</span>
             </div>
-            </div>    
+            </div>
     </div>
-        
+
     <div class="row">
-        <hr class="smallPadding"> 
+        <hr class="smallPadding">
     </div>
-    
+
     <div class="row">
         <div class="board">
             <div id="hover-preview-container" style="position:absolute; z-index:1000; width:65%"></div>
@@ -168,27 +184,27 @@
                 <div class="postContainer replyContainer" #elem [id]="thread.IndImmChanPostModelParent.Tx">
                     <div id="p15343728" class="post reply">
                         <div [className]="'h'+thread.IndImmChanPostModelParent.UID">
-	                        
+
                         <div class="postInfoM mobile">
                             <span class="nameBlock">
                                 <span class="subject" style="color:#b294bb !important;font-weight:700;">{{  thread.IndImmChanPostModelParent.Title }}</span>
                                 <span class="name">&nbsp;{{  thread.IndImmChanPostModelParent.Name }}</span>
                                 <span *ngIf="thread.IndImmChanPostModelParent.T" class="trip" title="TripCode">##{{  thread.IndImmChanPostModelParent.TripCode }}</span>
-                                <span *ngIf="thread.IndImmChanPostModelParent.F && thread.IndImmChanPostModelParent.F.length > 0" 
+                                <span *ngIf="thread.IndImmChanPostModelParent.F && thread.IndImmChanPostModelParent.F.length > 0"
                                     [className]="'flag-icon flag-icon-'+thread.IndImmChanPostModelParent.F" style="margin-left:3px;"
                                     [title]="thread.IndImmChanPostModelParent.Country"></span>
                                 <span *ngIf="!thread.IndImmChanPostModelParent.F || thread.IndImmChanPostModelParent.F.length == 0" [title]="thread.IndImmChanPostModelParent.Country">
                                     <img src="assets/images/anon_flag.svg" style="width:20px; margin-left:3px;">
                                 </span>
-                                 <span class="posteruid">&nbsp;&nbsp;ID: <span class="hand" title="Highlight posts by this ID" 
+                                 <span class="posteruid">&nbsp;&nbsp;ID: <span class="hand" title="Highlight posts by this ID"
                                      [style.background]="thread.IndImmChanPostModelParent.BackgroundColor">
                                      <span  class="idhover" [style.color]="thread.IndImmChanPostModelParent.FontColor" (click)="highlightposts(thread.IndImmChanPostModelParent.UID)">
                                          {{  thread.IndImmChanPostModelParent.UID }}
-                                     </span>                                     
+                                     </span>
                                 </span>
                                 </span>
-                                <span class="gold" style="cursor:pointer; margin-right:10px; text-align: center" *ngIf="thread.IndImmChanPostModelParent.ETH && 
-                                thread.IndImmChanPostModelParent.ETH.length > 0" (click)="Tip(thread.IndImmChanPostModelParent)"> 
+                                <span class="gold" style="cursor:pointer; margin-right:10px; text-align: center" *ngIf="thread.IndImmChanPostModelParent.ETH &&
+                                thread.IndImmChanPostModelParent.ETH.length > 0" (click)="Tip(thread.IndImmChanPostModelParent)">
                                     Tip ETH&nbsp;<i class="fab fa-ethereum" aria-hidden="true"></i>
                                 </span>
                             </span>
@@ -201,10 +217,10 @@
 	                            </span>
                                 <span class="headerlinks" [innerHtml]="thread.IndImmChanPostModelParent.HeaderLinks | safe: 'html'"></span>
                         </div>
-                        
+
                         <div class="file">
                             <a class="fileThumb" target="_blank">
-                                <span (click)="ManualOverRideShowImage(thread.IndImmChanPostModelParent)" 
+                                <span (click)="ManualOverRideShowImage(thread.IndImmChanPostModelParent)"
                                     *ngIf="!thread.IndImmChanPostModelParent.ShowImageOverride
                                     && thread.IndImmChanPostModelParent.HasImage && !this.Config.ShowImages
                                     && !thread.IndImmChanPostModelParent.ImageLoading && !thread.IndImmChanPostModelParent.Enc">
@@ -231,33 +247,33 @@
                                 </span>
                             </a>
                         </div>
-                        
+
                         <div class="postInfo desktop" id="pi15343728">
-                            
+
                             <span class="nameBlock" style="padding-top: 6px;">
-                            	<span class="gold" style="cursor:pointer; margin-right:6px; text-align: center" *ngIf="thread.IndImmChanPostModelParent.ETH && 
-	                            thread.IndImmChanPostModelParent.ETH.length > 0" (click)="Tip(thread.IndImmChanPostModelParent)"> 
+                            	<span class="gold" style="cursor:pointer; margin-right:6px; text-align: center" *ngIf="thread.IndImmChanPostModelParent.ETH &&
+	                            thread.IndImmChanPostModelParent.ETH.length > 0" (click)="Tip(thread.IndImmChanPostModelParent)">
 	                                Tip ETH&nbsp;<i class="fab fa-ethereum" aria-hidden="true"></i>
 	                            </span>
-                            	<span class="subject" style="color:#b294bb !important;font-weight:700;">{{  thread.IndImmChanPostModelParent.Title }}</span> 
-                                <span class="name">&nbsp;{{  thread.IndImmChanPostModelParent.Name }}</span> 
+                            	<span class="subject" style="color:#b294bb !important;font-weight:700;">{{  thread.IndImmChanPostModelParent.Title }}</span>
+                                <span class="name">&nbsp;{{  thread.IndImmChanPostModelParent.Name }}</span>
                                 <span *ngIf="thread.IndImmChanPostModelParent.T" class="trip" title="TripCode">##{{  thread.IndImmChanPostModelParent.TripCode }}</span>
-                                <span *ngIf="thread.IndImmChanPostModelParent.F && thread.IndImmChanPostModelParent.F.length > 0" 
-                                    [className]="'flag-icon flag-icon-'+thread.IndImmChanPostModelParent.F" style="margin-left:3px;"  
+                                <span *ngIf="thread.IndImmChanPostModelParent.F && thread.IndImmChanPostModelParent.F.length > 0"
+                                    [className]="'flag-icon flag-icon-'+thread.IndImmChanPostModelParent.F" style="margin-left:3px;"
                                     [title]="thread.IndImmChanPostModelParent.Country"></span>
                                 <span *ngIf="!thread.IndImmChanPostModelParent.F || thread.IndImmChanPostModelParent.F.length == 0" [title]="thread.IndImmChanPostModelParent.Country">
                                     <img src="assets/images/anon_flag.svg" style="width:20px; margin-left:3px;">
                                 </span>
-                                <span class="posteruid">&nbsp;&nbsp;ID: <span class="hand" title="Highlight posts by this ID" 
+                                <span class="posteruid">&nbsp;&nbsp;ID: <span class="hand" title="Highlight posts by this ID"
                                      [style.background]="thread.IndImmChanPostModelParent.BackgroundColor">
                                      <span  class="idhover" [style.color]="thread.IndImmChanPostModelParent.FontColor" (click)="highlightposts(thread.IndImmChanPostModelParent.UID)">
                                          {{  thread.IndImmChanPostModelParent.UID }}
-                                     </span>                                     
+                                     </span>
                                 </span>
-                                    
+
                             </span>
-                            </span> 
-                            <span class="dateTime">&nbsp;{{  thread.IndImmChanPostModelParent.Timestamp | date:'medium'}}</span> 
+                            </span>
+                            <span class="dateTime">&nbsp;{{  thread.IndImmChanPostModelParent.Timestamp | date:'medium'}}</span>
                             &nbsp;<i class="fas fa-exclamation-triangle flagpost" (click)="Flag(thread.IndImmChanPostModelParent)">&nbsp;</i>
                             <span class="postNum desktop"><span>&nbsp;No.&nbsp;</span><span style="cursor: pointer;" (click)="quoteMessage(thread.IndImmChanPostModelParent.Tx)" title="Reply to this post">&nbsp;{{  thread.IndImmChanPostModelParent.Tx.substring(0, 10)}}...</span>
                                 <span class="headerlinks" [innerHtml]="thread.IndImmChanPostModelParent.HeaderLinks | safe: 'html'"></span>
@@ -274,13 +290,13 @@
                     <div class="sideArrows">&gt;&gt;</div>
                     <div id="p15343737" class="post reply">
                         <div [className]="'h'+post.UID">
-                        <div class="postInfoM mobile" id="pim15343737"> 
+                        <div class="postInfoM mobile" id="pim15343737">
                             <span class="nameBlock">
-                                <span class="gold" style="cursor:pointer;" *ngIf="post.ETH && 
-                                post.ETH.length > 0" (click)="Tip(post)"> 
+                                <span class="gold" style="cursor:pointer;" *ngIf="post.ETH &&
+                                post.ETH.length > 0" (click)="Tip(post)">
                                     Tip ETH&nbsp;<i class="fab fa-ethereum" aria-hidden="true"></i>
                                 </span>
-                                <span class="name">{{ post.Name}}</span> 
+                                <span class="name">{{ post.Name}}</span>
                                 <span *ngIf="post.T" class="trip" title="TripCode">##{{  post.TripCode }}</span>
                                 <span *ngIf="post.F && post.F.length > 0" [className]="'flag-icon flag-icon-'+post.F" style="margin-left:3px;" [title]="post.Country"></span>
                                 <span *ngIf="!post.F || post.F.length == 0" [title]="post.Country">
@@ -290,7 +306,7 @@
                                         <span class="idhover" [style.color]="post.FontColor" (click)="highlightposts(post.UID)">{{ post.UID }}</span>
 
                                 </span>
-                                
+
                                 </span>
                                 <br>
                             </span>
@@ -299,9 +315,9 @@
                             <span class="headerlinks" [innerHtml]="post.HeaderLinks | safe: 'html'"></span>
                             </span>
                         </div>
-                        <div class="file" *ngIf="post.HasImage">                    
+                        <div class="file" *ngIf="post.HasImage">
                                 <a class="fileThumb" target="_blank">
-                                    <span (click)="ManualOverRideShowImage(post)" 
+                                    <span (click)="ManualOverRideShowImage(post)"
                                         *ngIf="!post.ShowImageOverride
                                         && post.HasImage && !this.Config.ShowImages
                                         && !post.ImageLoading && !post.Enc">
@@ -331,11 +347,11 @@
                             </div>
                         <div class="postInfo desktop" style="margin-top: 6px;">
                             <span class="nameBlock" >
-                                <span class="gold" style="cursor:pointer; margin-right:10px; text-align: center" *ngIf="post.ETH && 
-                                post.ETH.length > 0" (click)="Tip(post)"> 
+                                <span class="gold" style="cursor:pointer; margin-right:10px; text-align: center" *ngIf="post.ETH &&
+                                post.ETH.length > 0" (click)="Tip(post)">
                                     Tip ETH&nbsp;<i class="fab fa-ethereum" aria-hidden="true"></i>
                                 </span>
-                                <span class="name">{{ post.Name}}</span> 
+                                <span class="name">{{ post.Name}}</span>
                                 <span *ngIf="post.T" class="trip" title="TripCode">##{{  post.TripCode }}</span>
                                 <span *ngIf="post.F && post.F.length > 0" [className]="'flag-icon flag-icon-'+post.F" style="margin-left:3px;"  [title]="post.Country"></span>
                                 <span *ngIf="!post.F || post.F.length == 0" [title]="post.Country">
@@ -344,10 +360,10 @@
                                 <span class="posteruid">&nbsp;&nbsp;ID: <span class="hand" title="Highlight posts by this ID" [style.background]="post.BackgroundColor">
                                     <span class="idhover" [style.color]="post.FontColor" (click)="highlightposts(post.UID)">{{ post.UID }}</span>
                                 </span>
-                                
+
                                 </span>
-                            </span> 
-                            <span class="dateTime">&nbsp;{{  post.Timestamp | date:'medium'}}</span> 
+                            </span>
+                            <span class="dateTime">&nbsp;{{  post.Timestamp | date:'medium'}}</span>
                             &nbsp;<i class="fas fa-exclamation-triangle flagpost" (click)="Flag(post)">&nbsp;</i>
                             <span class="postNum desktop"><span>&nbsp;No.&nbsp;</span><span style="cursor: pointer;" (click)="quoteMessage(post.Tx)" title="Reply to this post">{{  post.Tx.substring(0, 10)}}...</span>
                                 <span class="headerlinks" [innerHtml]="post.HeaderLinks | safe: 'html'"></span>
@@ -363,15 +379,15 @@
             </div>
         </div>
     </div>
-    <div class="row rowspacer2">     
-        <hr class="smallPadding"> 
+    <div class="row rowspacer2">
+        <hr class="smallPadding">
     </div>
     <div class="text-center" [hidden]="!PostLoading">
         <h3>Loading...</h3>
         <span style="display:inline-block"><mat-spinner ></mat-spinner></span>
         <h2>{{ LoadingCalculatorService.CurrentPercentLoaded}}%</h2>
     </div>
-    
+
     <div class="row" *ngIf="thread !== null">
         <div class="col-lg-6">
                 <div class="util">
@@ -382,11 +398,9 @@
             <div class="util counters">
                 <span class="ts-replies">{{ thread.IndImmChanPostModelChildren.length }}</span> / <span class="ts-images">{{ thread.ImageReplies - 1 }}</span>
             </div>
-        </div>    
+        </div>
     </div>
-    <div class="row rowspacer2">     
+    <div class="row rowspacer2">
         &nbsp;
     </div>
 </div>
-    
-    

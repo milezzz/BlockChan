@@ -56,6 +56,24 @@ export class MainComponent implements OnInit {
     */
   }
 
+  public dropped(files: NgxFileDropEntry[]) {
+    if(files.length > 1) {
+      this.ToastrService.error('You can only upload one file at a time', 'Upload Error');
+      return;
+    }
+
+    for (const droppedFile of files) {
+      // Is it a file?
+      if (droppedFile.fileEntry.isFile) {
+        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+        fileEntry.file((file: File) => {
+          this.fileToUpload = file;
+          console.log('Drag and drop file loaded');
+        });
+      }
+    }
+  }
+
   removeTagIfExists(tag) {
     const tagToRemove = this.Meta.getTag('name=\'' + tag + '\'');
     if(tagToRemove) {

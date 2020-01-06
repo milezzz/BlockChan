@@ -3,7 +3,7 @@
 	        &nbsp;&nbsp;&nbsp;&nbsp;<a [attr.href]="BlockChanHostingService.HomeLink" title="Home"><i class="fa fa-home navgreen"></i></a>
         	<span class="grey"> | </span>
         <a [attr.href]="BlockChanHostingService.BoardsLink" title="Boards"><i class="fa fa-th-list navgreen"></i></a>
-        	<span class="grey"> | </span>     
+        	<span class="grey"> | </span>
         <a [attr.href]="BlockChanHostingService.AboutLink" title="About"><i class="fa fa-question-circle navgreen" aria-hidden="true"></i></a>
 	         &nbsp;&nbsp;<span class="grey">[ </span>
 	        <span title="Politically Incorrect" class="openBoard navgreen" (click)="OpenPolitics()">pol</span><span class="grey"> / </span>
@@ -12,30 +12,28 @@
 	        <span title="Weapons" class="openBoard navgreen" (click)="OpenWeapons()">k</span><span class="grey"> / </span>
 	        <span title="Meta"class="openBoard navgreen" (click)="OpenMeta()">m</span><span class="grey"> / </span>
 			<span title="Technology" class="openBoard navgreen" (click)="OpenTechnology()">g</span><span class="grey"> / </span>
-			
 			<span title="Literature" class="openBoard navgreen" (click)="OpenLit()">lit</span><span class="grey"> / </span>
 			<span title="Conspiracy" class="openBoard navgreen" (click)="OpenCon()">con</span><span class="grey"> / </span>
 			<span title="Video Games" class="openBoard navgreen" (click)="OpenV()">v</span><span class="grey"> / </span>
 			<span title="Mission Planning" class="openBoard navgreen" (click)="OpenMis()">mis</span><span class="grey"> / </span>
 			<span title="International" class="openBoard navgreen" (click)="OpenInt()">int</span><span class="grey"> / </span>
-
 			<span title="Random" class="openBoard navgreen" (click)="OpenRandom()">b</span><span class="grey"> ]</span>
 	    </div>
 	    <div class="row text-center">
 	        <img [src]="HeaderImage">
 	    </div>
-	
+
 	<div class="row">
 	    <div class="boardHeader center-text">/{{ postBoard }}/ - {{ postBoardName }}</div>
 	</div>
-	   
+
 	<div class="text-center" [hidden]="!Posting">
 	        <h3>Posting...</h3>
 	        <span style="display:inline-block"><mat-spinner ></mat-spinner></span>
 	    </div>
 	    <div class="row board-container text-center" [hidden]="!PostingError">
 	        <div class="btn btn-wrapper btn-round" style="width:100%">Error Posting</div>
-	    </div> 
+	    </div>
 	<br [hidden]="!ShowPostingForm">
 	<div class="row">
 	    <hr class="belowBoard">
@@ -49,21 +47,21 @@
 	        </span>
 	    </div>
 	</div>
-	
+
 	<div class="row poster-container" [hidden]="!ShowPostingForm">
 	    Title: <input id="sub_text" type="text'" [(ngModel)] = "postTitle" style="width:100%">
 	    <span id="sub_length" class="sub_length">{{ postTitle.length }} / 80</span>
 	    <br>Comment: <textarea [(ngModel)] = "postMessage" id="msg_text" rows="4" style="width:100%"></textarea>
 	    <span id="msg_length" class="msg_length">{{ postMessage | encodeURI}} / 1320</span><span class="grey">&nbsp;(urlencoded characters take 3)</span>
-	    
+
 	    <div class="row">
 	        <div class="col-lg-7">
 				<div class="center">
-					<ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" 
+					<ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
 					(onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
 						<ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
 						  Drag and Drop File. &nbsp;&nbsp;
-						  <button type="button" (click)="openFileSelector()">Choose File</button>
+						  <button type="button" (click)="openFileSelector()" class="btn btn-block btn-secondary btn-round btn-upload">Choose File <i class="fa fa-upload"></i>&nbsp;</button>
 						</ng-template>
 					</ngx-file-drop>
 					<div class="upload-table">
@@ -86,27 +84,27 @@
 	        <div class="col-md-6 col-lg-2">
 		        <div [hidden]="ShowTripEntry">
 	                <button (click)="AddTrip()" class="btn btn-block btn-primary btn-round btn-poster">Trip Code <i class="fa fa-hashtag"></i></button>
-	            
+
 	            <div class="" [hidden]="PostIsEncrypted">
 			        	<button (click)="ConfirmEncryption()" class="btn btn-block btn-primary btn-round btn-poster">Encrypt It <i class="fa fa-lock"></i></button>
 			    </div>
 			        <div [hidden]="!PostIsEncrypted">
 			            <ul class="list-inline text-center" [hidden]="!PostIsEncrypted">
-			            	<li><i class="fa fa-lock"></i></li> 
+			            	<li><i class="fa fa-lock"></i></li>
 			            </ul>
 			        </div>
-	            </div>	        
+	            </div>
 	        </div>
 	        <div class="col-md-6 col-lg-3">
 		    	<div [hidden]="!PostingEnabled">
 			        <button (click)="post()" class="btn btn-block btn-success btn-round btn-poster">Post It! <i class="fa fa-share"></i></button>
-			    </div> 
+			    </div>
 			    <div [hidden]="!PostingEnabled">
 			        <button (click)="togglePostingForm()" class="btn btn-block btn-danger btn-round btn-poster">Close <i class="fa fa-times-circle"></i></button>
 			    </div>
 	        </div>
 	    </div>
-	    
+
 	    <div class="row">
 	        <div class="col-lg-12">
 	            <div style="margin-top:7px; padding-top: 7px; margin-bottom:7px; padding-bottom: 7px;" [hidden]="!ShowTripEntry">
@@ -118,24 +116,24 @@
 		                    <br><br>
 			                XRP Address: <input type="text" [(ngModel)] = "TripAddress" rows="4" style="width:100%">
 			                XRP Secret: <input type="text" [(ngModel)] = "TripSecret" rows="4" style="width:100%">
-			                Posters Name: <input type="text" [(ngModel)] = "posterName" rows="4" style="width:100%">		
+			                Posters Name: <input type="text" [(ngModel)] = "posterName" rows="4" style="width:100%">
 			            <div [hidden]="!ShowTripEntry">
 				        	<div class="btn btn-block btn-danger btn-round btn-poster hidden">No Trip <i class="fa fa-times-circle"></i></div>
 				    	</div>
 	            </div>
 	        </div>
 	    </div>
-	
+
 	    <div style="margin-top:7px; padding-top: 7px; margin-bottom:7px; padding-bottom: 7px;">
 	    		Tip Address (ETH): <input type="text" [(ngModel)] = "EthTipAddress" rows="4" style="width:100%">
 	    </div>
-	        
+
 	    <div [hidden]="PostingEnabled">
 	        <span [hidden]="PostingEnabled" class="green">
 		            <i class="fas fa-hourglass-half"></i> Posting enabled within {{ PostingSecondsLeftCounter }} seconds.
 		    </span>
 	    </div>
-	</div>	
+	</div>
 	<br>
 	<div class="row text-center">
 		<div class="col-lg-4"></div>
@@ -145,24 +143,24 @@
 				Connecting...({{LoadingCalculatorService.NumberOfClientsConnected}}/{{LoadingCalculatorService.NumberOfClientConnectionsRequired}})
 			</span></b>
 		</div>
-		<div class="col-lg-4"></div> 
+		<div class="col-lg-4"></div>
 	</div>
 	    <div class="row">
 	        <div class="col-lg-3"></div>
-	        <div class="col-lg-6">        
-	            
+	        <div class="col-lg-6">
+
 	            <div class="blotter">
 		            <hr class="belowReply">
-		            <span class="small">&bull; Aggressive caching is active - make liberal use of the <span style="cursor: pointer;" class="navgreen" (click)="refresh(false)">[ Update <i class="fas fa-sync"></i> ]</span> button</span><br>
+		            <span class="small">&bull; User created boards? Give us your <a href="https://blockchan.ca/postViewer/m/D7B93460BF5FCF906B711E6DDDC3E18F74DC88C69A6CBF59F2F744C989E830DA">feedback</a></span><br>
 	                <span class="small">&bull; BlockChan is evolving. Keep suggestions, bug reports, etc. in <a href="/catalog/m">/meta</a></span><br>
 	                <!--<span class="small">&bull; We run on cigarettes + beer. Send <i class="fa fa-btc"> </i>itcoin asap bros: xxxxxxxxxxxxxxxxx</span>-->
 	            </div>
 	        </div>
 	        <div class="col-lg-3"></div>
 	    </div>
-	
-	<div class="row rowspacer2">     
-	    <hr class="smallPadding"> 
+
+	<div class="row rowspacer2">
+	    <hr class="smallPadding">
 	</div>
 	<div class="text-center" [hidden]="!PostLoading">
 		<h3>Loading...</h3>
@@ -170,7 +168,7 @@
 
 	    <span style="display:inline-block"><mat-spinner ></mat-spinner></span>
 	</div>
-	
+
 	<div class="row" *ngIf="threads !== null">
 	    <div class="col-md-6 col-lg-3">
 	            <div class="util">
@@ -180,18 +178,18 @@
 	    </div>
 	    <div class="hidden-xs hidden-sm hidden-md col-lg-5">
 	        <span class="util pull-right" style="margin-top: 6px; padding-top: 1px;">
-	            Sort: 
+	            Sort:
 	            <select id="order-ctrl" size="1" (change)="sortThreads($event.target.value)" [(ngModel)]="Config.Sort">
-	                <option value="LastReply">Last reply</option> 
-	                <option value="CreateDate">Creation date</option> 
-	                <option value="ReplyCount">Reply count</option> 
+	                <option value="LastReply">Last reply</option>
+	                <option value="CreateDate">Creation date</option>
+	                <option value="ReplyCount">Reply count</option>
 	            </select>
-	            &nbsp; 
-				<span *ngIf="Config.LastUpdateTime" class="util tiny">Last Update: {{  Config.LastUpdateTime | date:'medium' }}</span>     
+	            &nbsp;
+				<span *ngIf="Config.LastUpdateTime" class="util tiny">Last Update: {{  Config.LastUpdateTime | date:'medium' }}</span>
 	        </span>
 	    </div>
-	
-	    <div class="col-md-6 col-lg-4">   
+
+	    <div class="col-md-6 col-lg-4">
 	        <span class="util counters pull-right">
 	                &nbsp;&nbsp;{{ threads.length }} threads
 	        </span>
@@ -200,16 +198,16 @@
 	        <span class="util pull-right" [hidden]="!ShowSearch"> <input type="text" class="searchfield" placeholder="Search..." [(ngModel)]="search" (ngModelChange)="filterCatalog($event)"></span>
 	    </div>
 	</div>
-	 
+
 	<div class="row">
-	    <hr class="smallPadding"> 
+	    <hr class="smallPadding">
 	</div>
 	<div class="row upload-container">
 	    <div *ngFor="let row of threads; let i = index">
 	        <div *ngIf=" i % 6 === 0 " class="row">
-	            <div *ngFor="let thread of threads.slice(i,i+6)">         
+	            <div *ngFor="let thread of threads.slice(i,i+6)">
 	                <div class="col-lg-2">
-	                    <div class="progress-container" *ngIf="!thread.FilteredBySearch"> 
+	                    <div class="progress-container" *ngIf="!thread.FilteredBySearch">
 	                        <span style="float:right; margin-top:-8px; margin-right:3px; cursor:pointer" (click)="OpenPostInNewWindows(thread)" title="Open in New Window">⇗</span>
 	                        <div class="progress-item-container" *ngIf="thread.IndImmChanPostModelParent.ImageLoading" (click)="OpenThread(thread)">
 	                            <span style="display:inline-block"><mat-spinner ></mat-spinner></span>
@@ -225,7 +223,7 @@
 	                        <div class="progress-item-container" (click)="ManualOverRideShowImage(thread.IndImmChanPostModelParent)" *ngIf="!thread.IndImmChanPostModelParent.ShowImageOverride
 	                            && thread.IndImmChanPostModelParent.HasImage && !this.Config.ShowImages">
 	                            <div class="btn btn-wrapper btn-primary btn-round click-show">Show Image</div>
-	                        </div>                        
+	                        </div>
 	                        <div class="progress-item-container title" (click)="OpenThread(thread)">
 	                        <b>{{  thread.IndImmChanPostModelParent.Title | slice:0:140 }}</b>
 	                        </div>
@@ -236,9 +234,9 @@
 	                            Last: {{  thread.LastCommentTime | date:'medium' }}
 	                        </div>
 	                        <div class="progress-item-container-encrypted" *ngIf="thread.IndImmChanPostModelParent.Enc" (click)="OpenThread(thread)">
-	                                <ul class="list-inline text-center">                
-	                                        <li><i class="fa fa-lock lockfont"></i></li> 
-	                                </ul>    
+	                                <ul class="list-inline text-center">
+	                                        <li><i class="fa fa-lock lockfont"></i></li>
+	                                </ul>
 	                            Encrypted Thread. Open thread and enter key to decrypt.
 	                        </div>
 	                        <div class="progress-item-container-encrypted" *ngIf="thread.IndImmChanPostModelParent.EncDemo">
@@ -250,14 +248,14 @@
 	                        </div>
 	                     <!--   <div (click)="OpenThread(thread.IndImmChanPostModelParent.Tx)" class="btn btn-wrapper btn-default btn-round" style="width:100%">Open</div>
 	                    -->
-	                    </div>       
+	                    </div>
 	                </div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
-	<div class="row rowspacer2">     
-	    <hr class="smallPadding"> 
+	<div class="row rowspacer2">
+	    <hr class="smallPadding">
 	</div>
 	<div class="row" *ngIf="threads !== null">
 	        <div class="col-lg-6">
@@ -269,9 +267,9 @@
 	            <span class="util counters">
 	                {{ threads.length }} threads
 	            </span>
-	        </div>    
+	        </div>
 	</div>
-	<div class="row rowspacer2">     
+	<div class="row rowspacer2">
 	        &nbsp;
 	</div>
 </div>

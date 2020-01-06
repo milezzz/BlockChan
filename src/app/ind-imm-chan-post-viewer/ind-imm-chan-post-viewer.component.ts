@@ -28,6 +28,7 @@ import { FlagService } from '../flag.service';
 import { BlockChanHostSettingsService } from '../block-chan-host-settings.service';
 import { LoadingCalculatorService } from '../loading-calculator.service';
 import { AbstractFormGroupDirective } from '@angular/forms';
+import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
 
 @Component({
   selector: 'app-ind-imm-chan-post-viewer',
@@ -114,7 +115,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
         });
       }
 
-      const ivAsUint8 = cu.Base64ToUint8(this.IV);      
+      const ivAsUint8 = cu.Base64ToUint8(this.IV);
       this.EncryptedKey = new PostKey()
       this.EncryptedKey.Key = this.Key
       this.EncryptedKey.IVAsUint8 = ivAsUint8;
@@ -139,7 +140,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
         post = await this.IndImmChanPostManagerService.ManualOverRideShowImage(post);
       }
 
-      return post; 
+      return post;
     } catch (error) {
       if(isParent){
         this.ToastrService.error('Error Decrypting Post, plese try again.', 'Decrypt Error');
@@ -151,14 +152,14 @@ export class IndImmChanPostViewerComponent implements OnInit {
 
   async highlightposts(postClass: string) {
     let eles = this.Elem.nativeElement.querySelectorAll('.h' + postClass);
-    for (let i = 0; i < eles.length; i++) {    
+    for (let i = 0; i < eles.length; i++) {
       if(eles[i].style.background === '') {
         eles[i].style.background = '#8C3726';
         const newHeight = eles[i].parentNode.parentNode.clientHeight;
-        
+
         eles[i].style.minHeight = newHeight + 'px';
         eles[i].style.height = newHeight+ 'px';
-        
+
         //eles[i].style.minHeight = '500px';
         // eles[i].style.height = '500px';
       } else {
@@ -189,7 +190,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
           this.ToastrService.success('Post will no longer show in moderated client', 'Post flagged');
         }
       } else {
-        
+
       }
     });
   }
@@ -205,7 +206,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
         console.log('sending eth');
         this.SendEth(post, result)
       } else {
-        
+
       }
     });
   }
@@ -215,27 +216,27 @@ export class IndImmChanPostViewerComponent implements OnInit {
     await this.EthTipService.send(post.ETH, amount);
   }
 
-  
+
   OpenLit() {
     this.Router.navigate(['/catalog/lit']);
   }
 
-  
+
   OpenCon() {
     this.Router.navigate(['/catalog/con']);
   }
 
-  
+
   OpenV() {
     this.Router.navigate(['/catalog/v']);
   }
 
-  
+
   OpenMis() {
     this.Router.navigate(['/catalog/mis']);
   }
 
-  
+
   OpenInt() {
     this.Router.navigate(['/catalog/int']);
   }
@@ -282,7 +283,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
     this.ToastrService = toastrSrvice;
     this.Sanitizer = sanitizer;
     this.PostingEnabled = true;
-    this.Config = config; 
+    this.Config = config;
     this.GlobalEventService = globalEventService;
     this.EthTipService = ethTipService;
     this.Meta = meta;
@@ -296,7 +297,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
     });
 
     this.GlobalEventService.ShowImagesToggled.subscribe(state=>{
-    
+
       const cu: ChunkingUtility = new ChunkingUtility();
       if(state) {
         this.showImagesFromToggle()
@@ -312,7 +313,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
       if(this.PostDecrypted || !this.thread.IndImmChanPostModelParent.Enc){
         if(!this.thread.IndImmChanPostModelParent.Base64Image) {
           this.thread.IndImmChanPostModelParent.ImageLoading = true;
-          this.IndImmChanPostManagerService.ManualOverRideShowImageFromRefresh(this.thread.IndImmChanPostModelParent).then(result=>{          
+          this.IndImmChanPostManagerService.ManualOverRideShowImageFromRefresh(this.thread.IndImmChanPostModelParent).then(result=>{
             this.thread.IndImmChanPostModelParent = result;
             this.thread.IndImmChanPostModelParent.ImageLoading = false;
           });
@@ -335,7 +336,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
   }
 
   async showImagesFromToggle() {
-    
+
     if(this.PostDecrypted || !this.thread.IndImmChanPostModelParent.Enc){
       this.IndImmChanPostManagerService.ManualOverRideShowImage(this.thread.IndImmChanPostModelParent).then(result=>{
         this.thread.IndImmChanPostModelParent = result;
@@ -416,7 +417,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
       this.IndImmChanPostManagerService.IndImmChanPostService.TripSecret = '';
       this.IndImmChanPostManagerService.IndImmChanPostService.TripValid = false;
     }
-    
+
     if(!this.ShowTripEntry) {
       this.posterName = 'Anonymous';
     }
@@ -447,7 +448,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
       console.log(error);
       this.PostingError = true;
       this.PostingEnabled = true;
-    }  
+    }
     this.Posting = false;
   }
 
@@ -463,7 +464,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
 
     window.scrollTo(0,document.body.scrollHeight);
 
-    const threadResult = await this.IndImmChanPostManagerService.GetPostsForPostViewer(this.AddressManagerService.GetBoardAddress(this.postBoard), 
+    const threadResult = await this.IndImmChanPostManagerService.GetPostsForPostViewer(this.AddressManagerService.GetBoardAddress(this.postBoard),
       this.parentTx);
     threadResult.Board = this.postBoard;
     threadResult.Prep(this.BlockChanHostSettingsService.BaseUrl);
@@ -471,7 +472,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
     this.PostLoading = false;
 
     if (this.PostDecrypted) {
-      this.decrypt(); 
+      this.decrypt();
     }
     try {
           localStorage.setItem('thread-' + this.thread.IndImmChanPostModelParent.Tx, JSON.stringify(this.thread));
@@ -511,7 +512,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
     const board = this.Route.snapshot.params['board'];
     const id = this.Route.snapshot.params['id'];
 
-  
+
     console.log('board: ' + board);
     this.postBoard=board;
     if (board === 'pol') {
@@ -539,7 +540,7 @@ export class IndImmChanPostViewerComponent implements OnInit {
     } else if (board === 'int') {
       this.postBoardName = 'International';
     }
-    
+
     this.HeaderImage = 'assets/images/headers/' + this.postBoard + '-1.jpg';
 
     this.parentTx=id;
@@ -593,6 +594,24 @@ export class IndImmChanPostViewerComponent implements OnInit {
       .substring(0, Math.min(this.thread.IndImmChanPostModelParent.Msg.length, 70)).trim())});
     this.Meta.addTag({ name: 'twitter:image', content: 'https://ipfs.io/ipfs/' + this.thread.IndImmChanPostModelParent.IPFSHash });
       */
+  }
+
+  public dropped(files: NgxFileDropEntry[]) {
+    if(files.length > 1) {
+      this.ToastrService.error('You can only upload one file at a time', 'Upload Error');
+      return;
+    }
+
+    for (const droppedFile of files) {
+      // Is it a file?
+      if (droppedFile.fileEntry.isFile) {
+        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+        fileEntry.file((file: File) => {
+          this.fileToUpload = file;
+          console.log('Drag and drop file loaded');
+        });
+      }
+    }
   }
 
   removeTagIfExists(tag) {

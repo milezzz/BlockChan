@@ -40,7 +40,7 @@
    display: block;
    margin: auto;
    }
- 
+
  .sub-cont{
     margin-left:15px;
     padding-left:15px;
@@ -48,9 +48,6 @@
  .toggle-margin{
     margin:5px;
  }
-.btn-round{
-    border-radius: 12px;  
-}
 
 h2{
    color: white;
@@ -101,8 +98,8 @@ a:visited {
 }
 .custom-modalbox {
    mat-dialog-container {
-    background-color: #000 !important; 
-    border-radius: 12px;  
+    background-color: #000 !important;
+    border-radius: 12px;
 
    }
  }
@@ -123,5 +120,10 @@ a:visited {
 
 .btn-round{
    border-radius: 12px;
-   background-color: red;  
+   background-color: red;
+}
+
+.btn-upload {
+	max-width: 130px;
+	float: right;
 }

@@ -57,7 +57,7 @@ h3 {
     border-radius: 12px;
     padding:20px;
     margin:0 auto;
-    
+
  }
 .blotter {
    padding: 0.5em 0 1em 0;
@@ -134,11 +134,20 @@ table {
 }
 
 .btn-round{
-    border-radius: 12px;  
+    border-radius: 12px;
 }
 .btn-poster {
 	margin: 12px 0;
 	float: right;
+}
+
+.btn-upload {
+	max-width: 130px;
+	float: right;
+}
+
+.ngx-file-drop__drop-zone {
+	color: #ccc;
 }
 
 @media only screen and (min-width: 768px){
@@ -191,7 +200,7 @@ input:-moz-placeholder{
 	color:gray!important;
 }
 .mobile{
-	
+
 }
 a,a:visited{
 	color:#81a2be!important;
@@ -215,7 +224,7 @@ div.sideArrows{
 }
 div.post{
 	margin:6px 0;
-	overflow:hidden;		
+	overflow:hidden;
 }
 div.reply{
 	background-color:#282a2e;
@@ -244,7 +253,7 @@ div.post div.postInfo{
 }
 div.post div.postInfo span.postNum>a{
 	text-decoration:none;
-	color:#c5c8c6!important;	
+	color:#c5c8c6!important;
 }
 div.post div.postInfo span.postNum a:hover,.posteruid .hand:hover{
 	color:#5f89ac!important;
@@ -310,7 +319,7 @@ div.post div.file .fileThumb img{
 
 /* Thread Styling */
 .headerlinks {
-	font-size: 10px;	
+	font-size: 10px;
 	text-decoration: none;
 	overflow-wrap: break-word;
 	word-wrap: break-word;
@@ -366,47 +375,47 @@ div.post div.file .fileThumb img{
 }
 
 /* Responsive */
-/* 
+/*
   ##Device = Desktops
   ##Screen = 1281px to higher resolution desktops
 */
 
 @media (min-width: 1281px) {
  	.poster-container{
-		width: 76% !important;	 
+		width: 76% !important;
 	}
 }
 
-/* 
+/*
   ##Device = Laptops, Desktops
   ##Screen = B/w 1025px to 1280px
 */
 
 @media (min-width: 1025px) and (max-width: 1280px) {
 	.poster-container{
-		width: 76% !important;	
+		width: 76% !important;
 	}
 }
 
-/* 
+/*
   ##Device = Tablets, Ipads (portrait) and Larger
   ##Screen = B/w 768px to 1024px
 */
 
 @media (min-width: 1201px) {
-  
+
   	.btn-poster{
 	  	width: 110px;
   	}
-  
+
 }
 @media (min-width: 468px) {
-  
+
   	.btn-poster{
 	  	float: none;
   	}
-  
-}	
+
+}
 
 /*! CSS Used for targetting mobiles */
 @media only screen and (max-width:480px){

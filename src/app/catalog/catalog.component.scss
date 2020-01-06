@@ -23,7 +23,7 @@
    -moz-transition-duration: 0.3s;
    -webkit-transform: translate(1px, -1px);
    -moz-transform: translate(1px, -1px);
-      
+
 }
 
  .upload-container{
@@ -32,15 +32,15 @@
     padding:10px;
     margin:10px;
  }
- 
+
  .poster-container{
     background-color: rgba(52, 52, 52, 0.55);
     border-radius: 12px;
     padding:20px;
     margin:0 auto;
-    
+
  }
- 
+
  .board-container{
    background-color:black;
    border-radius: 12px;
@@ -73,7 +73,7 @@
    display: block;
    margin: auto;
    }
- 
+
 .webmContainer {
    background-color: rgba(16, 16, 16, 0.85);
    border-radius: 12px;
@@ -96,14 +96,22 @@
     margin:5px;
  }
 .btn-round{
-    border-radius: 12px;  
+    border-radius: 12px;
 }
 .btn-poster {
 	margin: 12px 0;
 	float: right;
 }
+.btn-upload {
+	max-width: 130px;
+	float: right;
+}
+.upload-table {
+  font-size: 1em;
+  color: red;}
+
 .msg_length {
-	
+
 }
 h2{
    color: white;
@@ -120,7 +128,7 @@ textarea{
    margin-top: 0px;
 }
 input {
-   margin-bottom: 5px;	
+   margin-bottom: 5px;
 }
 .estimates{
    font-size: 12px; top:5px
@@ -161,8 +169,8 @@ a:visited {
 }
 .custom-modalbox {
    mat-dialog-container {
-    background-color: #000 !important; 
-    border-radius: 12px;  
+    background-color: #000 !important;
+    border-radius: 12px;
 
    }
  }
@@ -201,7 +209,7 @@ a:visited {
 
 .searchfield {
 	font-size:11px;
-	margin-top: 7px; 
+	margin-top: 7px;
 	padding-top: 1px;
 }
 
@@ -326,47 +334,47 @@ table {
 }
 
 /* Responsive */
-/* 
+/*
   ##Device = Desktops
   ##Screen = 1281px to higher resolution desktops
 */
 
 @media (min-width: 1281px) {
  	.poster-container{
-		width: 76% !important;	 
+		width: 76% !important;
 	}
 }
 
-/* 
+/*
   ##Device = Laptops, Desktops
   ##Screen = B/w 1025px to 1280px
 */
 
 @media (min-width: 1025px) and (max-width: 1280px) {
 	.poster-container{
-		width: 76% !important;	
+		width: 76% !important;
 	}
 }
 
-/* 
+/*
   ##Device = Tablets, Ipads (portrait) and Larger
   ##Screen = B/w 768px to 1024px
 */
 
 @media (min-width: 1201px) {
-  
+
   	.btn-poster{
 	  	width: 110px;
   	}
-  
+
 }
 @media (min-width: 468px) {
-  
+
   	.btn-poster{
 	  	float: none;
   	}
-  
-}	
+
+}
 
 @media (max-width: 1201px) {
     #hideselect {
