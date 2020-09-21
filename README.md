@@ -69,12 +69,4 @@
 
 ## Donate
 
-    XRP:rw2htZCsyJk8yNRYDxjiv9QFiZ2yqCQCPJ
-
-    XMR:47Nye79bFFea5Crez8xS7zjjjwBTYbSBD9mxDLfBcNPSXejx8MXxRgy545GNVEGu2HbSTyfJhHfcod9VcXXiZcYw7x3x6se
-
-    BTC:bc1q9nfy6f6t5rmd0pz0k4ygrycq7g2h5k5gg3a58k
-
-    ETH:0x37aaA1069c8E26d81fE2Bf6BE958f43cB6b731Ca
-
-    LTC:LgiG6nz4Q7zuYdT6Z2KC6BWevRGMXqDbfP
+    BTC: 133TGUYB2xPQ3cUATfDkK4zjv6y4Mrtn11
